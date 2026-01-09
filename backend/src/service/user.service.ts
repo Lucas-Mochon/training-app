@@ -52,7 +52,7 @@ export class UserService {
     const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET!, { expiresIn: '7d' });
 
     user.update({ refreshToken });
-    Logger.info(`Generated tokens for user ${user.email}`);
+    Logger.info(`Generated tokens for user ${user.get('email')}`);
 
     return { accessToken, user };
   }
