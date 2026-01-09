@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { UserLevel } from '../enum/user-level.enum';
 import { UserGoal } from '../enum/user-goal.enum';
-const sequelize = require('../index')
+import { sequelize } from '../config/database';
 
 interface UserAttributes {
   id: string;

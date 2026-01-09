@@ -1,5 +1,5 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-const sequelize = require('../index')
+import { sequelize } from '../config/database';
 
 interface WorkoutExerciseAttributes {
   id: string;

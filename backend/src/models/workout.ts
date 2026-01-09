@@ -1,5 +1,5 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-const sequelize = require('../index')
+import { sequelize } from '../config/database';
 import { WorkoutGoal } from '../enum/workout-goal.enum';
 
 interface WorkoutAttributes {

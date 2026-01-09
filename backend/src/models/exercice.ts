@@ -1,5 +1,5 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-const sequelize = require('../index')
+import { sequelize } from '../config/database';
 import { ExerciseDifficulty } from '../enum/exercice-difficulty.enum';
 import { ExerciseEquipment } from '../enum/exercice-equipment.enum';
 

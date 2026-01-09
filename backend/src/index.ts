@@ -1,9 +1,14 @@
-import "dotenv/config";
-import { initDb } from "./models";
+import express from 'express';
+import userRoutes from './routes/user.routes';
+import { initDb } from './models/index';
 
-const start = async () => {
-  await initDb();
-  console.log("Backend started");
-};
+const app = express();
+app.use(express.json());
 
-start();
+initDb();
+
+app.use('/api/users', userRoutes);
+
+
+const PORT = process.env.PORT;
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));
