@@ -1,0 +1,39 @@
+import { DataTypes, Model, Optional } from 'sequelize';
+const sequelize = require('../index')
+
+interface MuscleGroupAttributes {
+  id: number;
+  name: string;
+}
+
+interface MuscleGroupCreationAttributes extends Optional<MuscleGroupAttributes, 'id'> {}
+
+class MuscleGroup extends Model<MuscleGroupAttributes, MuscleGroupCreationAttributes> implements MuscleGroupAttributes {
+  public id!: number;
+  public name!: string;
+
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+}
+
+MuscleGroup.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    }
+  },
+  {
+    sequelize,
+    tableName: 'MuscleGroups',
+    timestamps: false
+  }
+);
+
+export default MuscleGroup;
