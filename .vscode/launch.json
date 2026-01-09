@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "Backend Node TS",
-      "type": "pwa-node",
+      "type": "node",
       "request": "launch",
       "cwd": "${workspaceFolder}/backend",
       "runtimeExecutable": "pnpm",
@@ -20,11 +20,11 @@
       "program": "lib/main.dart",
       "args": [],
       "toolArgs": ["run"],
-      "console": "integratedTerminal"
+      "console": "debugConsole"
     },
     {
       "name": "Workout Builder Agent (Python)",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/workout_builder_agent/main.py",
       "console": "integratedTerminal",
