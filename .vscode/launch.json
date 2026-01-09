@@ -1,0 +1,44 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Backend Node TS",
+      "type": "pwa-node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/backend",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev"],
+      "console": "integratedTerminal",
+      "restart": true,
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Frontend Flutter",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/frontend",
+      "program": "lib/main.dart",
+      "args": [],
+      "toolArgs": ["run"],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Workout Builder Agent (Python)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/workout_builder_agent/main.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/workout_builder_agent"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full Stack Dev",
+      "configurations": [
+        "Backend Node TS",
+        "Frontend Flutter",
+        "Workout Builder Agent (Python)"
+      ]
+    }
+  ]
+}
