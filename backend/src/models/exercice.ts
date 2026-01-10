@@ -15,15 +15,15 @@ interface ExerciseAttributes {
 interface ExerciseCreationAttributes extends Optional<ExerciseAttributes, 'id' | 'description' | 'difficulty' | 'equipment'> {}
 
 class Exercise extends Model<ExerciseAttributes, ExerciseCreationAttributes> implements ExerciseAttributes {
-  public id!: number;
-  public name!: string;
-  public description?: string | null;
-  public difficulty?: ExerciseDifficulty | null;
-  public is_compound!: boolean;
-  public equipment?: ExerciseEquipment | null;
+  id!: number;
+  name!: string;
+  description?: string | null;
+  difficulty?: ExerciseDifficulty | null;
+  is_compound!: boolean;
+  equipment?: ExerciseEquipment | null;
 
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  readonly createdAt!: Date;
+  readonly updatedAt!: Date;
 }
 
 Exercise.init(

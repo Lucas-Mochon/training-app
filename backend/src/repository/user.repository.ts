@@ -19,6 +19,10 @@ export class UserRepository {
     return User.update(data, { where: { id } });
   }
 
+  async updateRefreshToken(id: string, refreshToken: string | null) {
+    return User.update({ refreshToken }, { where: { id } });
+  }
+
   async delete(id: string) {
     return User.destroy({ where: { id } });
   }

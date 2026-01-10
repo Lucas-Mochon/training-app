@@ -18,7 +18,7 @@ export class UserService {
   async login(data: LoginDto) {
     const user = await this.repo.findByEmail(data.email);
     if (!user) throw new Error('Invalid credentials');
-    const match = await bcrypt.compare(data.password, user.password_hash);
+    const match = await bcrypt.compare(data.password, user.get('password_hash'));
     if (!match) throw new Error('Invalid credentials');
     return this.generateTokens(user);
   }
@@ -46,12 +46,12 @@ export class UserService {
     return this.repo.findById(userId);
   }
 
-  private generateTokens(user: User) {
+  generateTokens(user: User) {
     const payload = { userId: user.get('id') };
-    const accessToken = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '15m' });
+    const accessToken = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '30m' });
     const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET!, { expiresIn: '7d' });
 
-    user.update({ refreshToken });
+    this.repo.updateRefreshToken(user.get('id'), refreshToken);
     Logger.info(`Generated tokens for user ${user.get('email')}`);
 
     return { accessToken, user };

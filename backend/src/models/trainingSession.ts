@@ -12,14 +12,14 @@ interface TrainingSessionAttributes {
 interface TrainingSessionCreationAttributes extends Optional<TrainingSessionAttributes, 'id' | 'performed_at'> {}
 
 class TrainingSession extends Model<TrainingSessionAttributes, TrainingSessionCreationAttributes> implements TrainingSessionAttributes {
-  public id!: string;
-  public performed_at!: Date;
-  public duration!: number;
-  public feeling!: number;
-  public userId!: string;
+  id!: string;
+  performed_at!: Date;
+  duration!: number;
+  feeling!: number;
+  userId!: string;
 
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  readonly createdAt!: Date;
+  readonly updatedAt!: Date;
 }
 
 TrainingSession.init(

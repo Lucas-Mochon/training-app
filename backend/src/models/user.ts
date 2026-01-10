@@ -15,15 +15,15 @@ interface UserAttributes {
 interface UserCreationAttributes extends Optional<UserAttributes, 'id' | 'refreshToken'> {}
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
-  public id!: string;
-  public email!: string;
-  public password_hash!: string;
-  public level!: UserLevel;
-  public goal!:  UserGoal;
-  public refreshToken?: string | null;
+  id!: string;
+  email!: string;
+  password_hash!: string;
+  level!: UserLevel;
+  goal!:  UserGoal;
+  refreshToken?: string | null;
 
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  readonly createdAt!: Date;
+  readonly updatedAt!: Date;
 }
 
 User.init(

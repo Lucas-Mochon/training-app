@@ -2,21 +2,21 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/database';
 import { WorkoutGoal } from '../enum/workout-goal.enum';
 
-interface WorkoutAttributes {
+export interface WorkoutAttributes {
   id: string;
   goal: WorkoutGoal;
   duration: number;
 }
 
-interface WorkoutCreationAttributes extends Optional<WorkoutAttributes, 'id'> {}
+export interface WorkoutCreationAttributes extends Optional<WorkoutAttributes, 'id'> {}
 
 class Workout extends Model<WorkoutAttributes, WorkoutCreationAttributes> implements WorkoutAttributes {
-  public id!: string;
-  public goal!: WorkoutGoal;
-  public duration!: number;
+  id!: string;
+  goal!: WorkoutGoal;
+  duration!: number;
 
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  readonly createdAt!: Date;
+  readonly updatedAt!: Date;
 }
 
 Workout.init(

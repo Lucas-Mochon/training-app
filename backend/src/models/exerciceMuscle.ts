@@ -12,13 +12,13 @@ interface ExerciseMuscleAttributes {
 interface ExerciseMuscleCreationAttributes extends Optional<ExerciseMuscleAttributes, 'id'> {}
 
 class ExerciseMuscle extends Model<ExerciseMuscleAttributes, ExerciseMuscleCreationAttributes> implements ExerciseMuscleAttributes {
-  public id!: string;
-  public role!: ExerciseMuscleRole;
-  public exerciseId!: string;
-  public muscleGroupId!: number;
+  id!: string;
+  role!: ExerciseMuscleRole;
+  exerciseId!: string;
+  muscleGroupId!: number;
 
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  readonly createdAt!: Date;
+  readonly updatedAt!: Date;
 }
 
 ExerciseMuscle.init(

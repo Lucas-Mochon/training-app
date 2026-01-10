@@ -1,27 +1,61 @@
-const User = require('./models/User');
-const Exercise = require('./models/Exercise');
-const MuscleGroup = require('./models/MuscleGroup');
-const ExerciseMuscle = require('./models/ExerciseMuscle');
-const Workout = require('./models/Workout');
-const WorkoutExercise = require('./models/WorkoutExercise');
-const TrainingSession = require('./models/TrainingSession');
-const SessionSet = require('./models/SessionSet');
+import User from './user';
+import Workout from './workout';
 
-User.hasMany(Workout);
-Workout.belongsTo(User);
+import TrainingSession from './trainingSession';
+import SessionSet from './sessionSet';
+import MuscleGroup from './muscleGroups';
+import ExerciseMuscle from './exerciceMuscle';
+import Exercise from './exercice';
+import WorkoutExercise from './workoutExercice';
 
-Exercise.belongsToMany(MuscleGroup, { through: ExerciseMuscle });
-MuscleGroup.belongsToMany(Exercise, { through: ExerciseMuscle });
+// === User ↔ Workout ===
+User.hasMany(Workout, { foreignKey: 'userId' });
+Workout.belongsTo(User, { foreignKey: 'userId' });
 
-Workout.belongsToMany(Exercise, { through: WorkoutExercise });
-Exercise.belongsToMany(Workout, { through: WorkoutExercise });
+// === Workout ↔ Exercise (many-to-many) ===
+Workout.belongsToMany(Exercise, {
+  through: WorkoutExercise,
+  as: 'exercises',
+  foreignKey: 'workoutId',
+  otherKey: 'exerciseId',
+});
 
-Workout.hasMany(TrainingSession);
-TrainingSession.belongsTo(Workout);
-User.hasMany(TrainingSession);
-TrainingSession.belongsTo(User);
+Exercise.belongsToMany(Workout, {
+  through: WorkoutExercise,
+  as: 'workouts',
+  foreignKey: 'exerciseId',
+  otherKey: 'workoutId',
+});
 
-TrainingSession.hasMany(SessionSet);
-SessionSet.belongsTo(TrainingSession);
-Exercise.hasMany(SessionSet);
-SessionSet.belongsTo(Exercise);
+
+// === Exercise ↔ MuscleGroup (many-to-many) ===
+Exercise.belongsToMany(MuscleGroup, {
+  through: ExerciseMuscle,
+  as: 'muscleGroups',
+  foreignKey: 'exerciseId',
+  otherKey: 'muscleGroupId',
+});
+
+MuscleGroup.belongsToMany(Exercise, {
+  through: ExerciseMuscle,
+  as: 'exercises',
+  foreignKey: 'muscleGroupId',
+  otherKey: 'exerciseId',
+});
+
+// === Workout ↔ TrainingSession (one-to-many) ===
+Workout.hasMany(TrainingSession, { foreignKey: 'workoutId' });
+TrainingSession.belongsTo(Workout, { foreignKey: 'workoutId' });
+
+// === User ↔ TrainingSession (one-to-many) ===
+User.hasMany(TrainingSession, { foreignKey: 'userId' });
+TrainingSession.belongsTo(User, { foreignKey: 'userId' });
+
+// === TrainingSession ↔ SessionSet (one-to-many) ===
+TrainingSession.hasMany(SessionSet, { foreignKey: 'trainingSessionId' });
+SessionSet.belongsTo(TrainingSession, { foreignKey: 'trainingSessionId' });
+
+// === Exercise ↔ SessionSet (one-to-many) ===
+Exercise.hasMany(SessionSet, { foreignKey: 'exerciseId' });
+SessionSet.belongsTo(Exercise, { foreignKey: 'exerciseId' });
+
