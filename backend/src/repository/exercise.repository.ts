@@ -1,7 +1,7 @@
 import { UpdateExercice } from "../dto/exercice.dto";
 import Exercise, { ExerciseCreationAttributes } from "../models/exercice";
 
-export class ExercicesRepository {
+export class ExerciseRepository {
     async list() {
         return Exercise.findAll();
     }

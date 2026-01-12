@@ -1,9 +1,9 @@
 import { UpdateExercice } from "../dto/exercice.dto";
 import { ExerciseCreationAttributes } from "../models/exercice";
-import { ExercicesRepository } from "../repository/exercice.repository";
+import { ExerciseRepository } from "../repository/exercise.repository";
 
-export class ExerciceService {
-    private repo = new ExercicesRepository();
+export class ExerciseService {
+    private repo = new ExerciseRepository();
 
     async list() {
         return this.repo.list();

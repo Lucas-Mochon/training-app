@@ -1,11 +1,11 @@
 import { ErrorResponse } from "../common/response/response.error";
 import { SuccessResponse } from "../common/response/response.success";
-import { ExerciceService } from "../service/exercice.service";
+import { ExerciseService } from "../service/exercise.service";
 import { Request, Response } from 'express';
 
-const service = new ExerciceService();
+const service = new ExerciseService();
 
-export class ExerciceController {
+export class ExerciseController {
     static async list(req: Request, res: Response) {
         try {
             const result = await service.list();

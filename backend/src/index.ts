@@ -1,7 +1,7 @@
 import express from 'express';
 import userRoutes from './routes/user.routes';
 import workoutRoutes from './routes/workout.routes';
-import exerciceRoutes from './routes/exercice.routes';
+import exerciceRoutes from './routes/exercise.routes';
 import muscleGroupRoutes from './routes/muscle-group.routes';
 import exerciseMuscleRoutes from './routes/exercise-muscle.routes'
 import { initDb } from './models/index';

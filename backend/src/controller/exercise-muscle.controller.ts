@@ -1,6 +1,6 @@
 import { ErrorResponse } from "../common/response/response.error";
 import { SuccessResponse } from "../common/response/response.success";
-import { ExerciseMuscleService } from "../service/exercice-muscle.service";
+import { ExerciseMuscleService } from "../service/exercise-muscle.service";
 import { Request, Response } from "express";
 
 const service = new ExerciseMuscleService();
