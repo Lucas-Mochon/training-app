@@ -2,23 +2,23 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/database';
 
 interface SessionSetAttributes {
-  id: string;
+  id: number;
   set_number: number;
   reps: number;
   weight: number;
   trainingSessionId: string;
-  workoutExerciseId: string;
+  exerciseId: number;
 }
 
-interface SessionSetCreationAttributes extends Optional<SessionSetAttributes, 'id'> {}
+export interface SessionSetCreationAttributes extends Optional<SessionSetAttributes, 'id'> {}
 
 class SessionSet extends Model<SessionSetAttributes, SessionSetCreationAttributes> implements SessionSetAttributes {
-  id!: string;
+  id!: number;
   set_number!: number;
   reps!: number;
   weight!: number;
   trainingSessionId!: string;
-  workoutExerciseId!: string;
+  exerciseId!: number;
 
   readonly createdAt!: Date;
   readonly updatedAt!: Date;
@@ -27,8 +27,8 @@ class SessionSet extends Model<SessionSetAttributes, SessionSetCreationAttribute
 SessionSet.init(
   {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true
     },
     set_number: {
@@ -47,15 +47,15 @@ SessionSet.init(
       type: DataTypes.UUID,
       allowNull: false
     },
-    workoutExerciseId: {
-      type: DataTypes.UUID,
+    exerciseId: {
+      type: DataTypes.INTEGER,
       allowNull: false
     }
   },
   {
     sequelize,
     tableName: 'SessionSets',
-    timestamps: false
+    timestamps: true
   }
 );
 
