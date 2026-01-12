@@ -12,7 +12,7 @@ interface ExerciseAttributes {
   equipment?: ExerciseEquipment | null;
 }
 
-interface ExerciseCreationAttributes extends Optional<ExerciseAttributes, 'id' | 'description' | 'difficulty' | 'equipment'> {}
+export interface ExerciseCreationAttributes extends Optional<ExerciseAttributes, 'id' | 'description' | 'difficulty' | 'equipment'> {}
 
 class Exercise extends Model<ExerciseAttributes, ExerciseCreationAttributes> implements ExerciseAttributes {
   id!: number;
