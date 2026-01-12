@@ -2,7 +2,7 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/database';
 
 interface WorkoutExerciseAttributes {
-
+  id: number;
   sets: number;
   reps: string;
   rest_seconds: number;
@@ -11,9 +11,10 @@ interface WorkoutExerciseAttributes {
   exerciseId: string;
 }
 
-interface WorkoutExerciseCreationAttributes extends WorkoutExerciseAttributes {}
+export interface WorkoutExerciseCreationAttributes extends Optional<WorkoutExerciseAttributes, 'id'> {}
 
 class WorkoutExercise extends Model<WorkoutExerciseAttributes, WorkoutExerciseCreationAttributes> implements WorkoutExerciseAttributes {
+  id!: number;
   sets!: number;
   reps!: string;
   rest_seconds!: number;
@@ -27,6 +28,11 @@ class WorkoutExercise extends Model<WorkoutExerciseAttributes, WorkoutExerciseCr
 
 WorkoutExercise.init(
   {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
     sets: {
       type: DataTypes.INTEGER,
       allowNull: false
