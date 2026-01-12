@@ -6,7 +6,7 @@ interface MuscleGroupAttributes {
   name: string;
 }
 
-interface MuscleGroupCreationAttributes extends Optional<MuscleGroupAttributes, 'id'> {}
+export interface MuscleGroupCreationAttributes extends Optional<MuscleGroupAttributes, 'id'> {}
 
 class MuscleGroup extends Model<MuscleGroupAttributes, MuscleGroupCreationAttributes> implements MuscleGroupAttributes {
   id!: number;
