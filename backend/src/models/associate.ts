@@ -43,6 +43,36 @@ MuscleGroup.belongsToMany(Exercise, {
   otherKey: 'exerciseId',
 });
 
+// === Exercise ↔ ExerciseMuscle (belong-to-many) ===
+Exercise.belongsToMany(ExerciseMuscle, {
+  through: ExerciseMuscle,
+  as: 'exerciseMuscles',
+  foreignKey: 'exerciseId',
+  otherKey: 'id',
+});
+
+ExerciseMuscle.belongsToMany(Exercise, {
+  through: ExerciseMuscle,
+  as: 'exercises',
+  foreignKey: 'id',
+  otherKey: 'exerciseId',
+});
+
+// === MuscleGroup ↔ ExerciseMuscle (belong-to-many) ===
+MuscleGroup.belongsToMany(ExerciseMuscle, {
+  through: ExerciseMuscle,
+  as: 'exerciseMuscles',
+  foreignKey: 'muscleGroupId',
+  otherKey: 'id',
+});
+
+ExerciseMuscle.belongsToMany(MuscleGroup, {
+  through: ExerciseMuscle,
+  as: 'muscleGroups',
+  foreignKey: 'id',
+  otherKey: 'muscleGroupId',
+});
+
 // === Workout ↔ TrainingSession (one-to-many) ===
 Workout.hasMany(TrainingSession, { foreignKey: 'workoutId' });
 TrainingSession.belongsTo(Workout, { foreignKey: 'workoutId' });

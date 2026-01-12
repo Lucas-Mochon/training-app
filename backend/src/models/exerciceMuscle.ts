@@ -3,16 +3,16 @@ import { sequelize } from '../config/database';
 import { ExerciseMuscleRole } from '../enum/exercie-muscle-goal.enum';
 
 interface ExerciseMuscleAttributes {
-  id: string;
+  id: number;
   role: ExerciseMuscleRole;
   exerciseId: string;
   muscleGroupId: number;
 }
 
-interface ExerciseMuscleCreationAttributes extends Optional<ExerciseMuscleAttributes, 'id'> {}
+export interface ExerciseMuscleCreationAttributes extends Optional<ExerciseMuscleAttributes, 'id'> {}
 
 class ExerciseMuscle extends Model<ExerciseMuscleAttributes, ExerciseMuscleCreationAttributes> implements ExerciseMuscleAttributes {
-  id!: string;
+  id!: number;
   role!: ExerciseMuscleRole;
   exerciseId!: string;
   muscleGroupId!: number;
@@ -24,8 +24,8 @@ class ExerciseMuscle extends Model<ExerciseMuscleAttributes, ExerciseMuscleCreat
 ExerciseMuscle.init(
   {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true
     },
     role: {
