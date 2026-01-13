@@ -11,9 +11,16 @@ import { initDb } from './models/index';
 import { Logger } from './common/logger';
 import { observabilityMiddleware } from './middleware/observability';
 import { authMiddleware } from './middleware/auth';
+import cors from 'cors';
 
 const app = express();
 app.use(express.json());
+
+app.use(cors({
+  origin: /localhost/,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}))
 
 initDb();
 

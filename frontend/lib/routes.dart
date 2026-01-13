@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/views/home_view.dart';
+import 'package:frontend/views/user/login.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (_) => HomeView());
+      case '/login':
+        return MaterialPageRoute(builder: (_) => LoginPage());
       default:
         return _errorRoute();
     }

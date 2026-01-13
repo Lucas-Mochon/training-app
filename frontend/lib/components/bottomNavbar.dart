@@ -30,7 +30,7 @@ class BottomNavbar extends StatelessWidget {
             Navigator.pushNamed(context, '/workouts');
             break;
           case 3:
-            Navigator.pushNamed(context, '/profil');
+            Navigator.pushNamed(context, '/login');
         }
       },
     );

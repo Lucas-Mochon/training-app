@@ -9,7 +9,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Navigator(
-        initialRoute: '/',
+        initialRoute: '/login',
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
       bottomNavigationBar: const BottomNavbar(),
