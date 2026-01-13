@@ -4,7 +4,7 @@ import ExerciseMuscle, { ExerciseMuscleCreationAttributes } from "../models/exer
 import MuscleGroup from "../models/muscleGroups";
 
 export class ExerciseMuscleRepository {
-    async list() {
+    async list(): Promise<ExerciseMuscle[]> {
         return ExerciseMuscle.findAll({
             include: [
                 { model: Exercise, as: 'exercises', through: { attributes: [] }},
@@ -13,7 +13,7 @@ export class ExerciseMuscleRepository {
         });
     }
 
-    async getOne(id: number) {
+    async getOne(id: number): Promise<ExerciseMuscle | null> {
         return ExerciseMuscle.findByPk(id, {
             include: [
                 { model: Exercise, as: 'exercises', through: { attributes: [] }},
@@ -22,11 +22,11 @@ export class ExerciseMuscleRepository {
         });
     }
 
-    async create(data: ExerciseMuscleCreationAttributes) {
+    async create(data: ExerciseMuscleCreationAttributes): Promise<ExerciseMuscle | null> {
         return ExerciseMuscle.create(data);
     }
 
-    async update(data : UpdateExerciseMuscleDto) {
+    async update(data : UpdateExerciseMuscleDto): Promise<ExerciseMuscle | null> {
         const updateData: Partial<ExerciseMuscle> = {};
 
         if (data.role !== null) updateData.role = data.role;
@@ -38,7 +38,7 @@ export class ExerciseMuscleRepository {
         return ExerciseMuscle.findByPk(data.id);
     }
 
-    async delete(id: number) {
+    async delete(id: number): Promise<void> {
         await ExerciseMuscle.destroy({ where: { id } });
     }
 }

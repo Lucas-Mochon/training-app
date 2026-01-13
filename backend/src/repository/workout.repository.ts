@@ -4,7 +4,7 @@ import Workout, { WorkoutAttributes, WorkoutCreationAttributes } from "../models
 import { WhereOptions } from 'sequelize';
 
 export class WorkoutRepository {
-    static async list(filter: FilterListWorkouts) {
+    static async list(filter: FilterListWorkouts): Promise<Workout[]> {
         const where: WhereOptions<WorkoutAttributes> = {};
 
         if (filter.goal) where.goal = filter.goal;
@@ -16,17 +16,17 @@ export class WorkoutRepository {
         });
     }
 
-    static async getOne(id: string) {
+    static async getOne(id: string): Promise<Workout | null> {
         return Workout.findByPk(id, {
             include: [{ model: Exercise, as: 'exercises' }],
         });
     }
 
-    static async create(data: WorkoutCreationAttributes) {
+    static async create(data: WorkoutCreationAttributes): Promise<Workout | null> {
         return Workout.create(data);
     }
 
-    static async update(data: WorkoutAttributes) {
+    static async update(data: WorkoutAttributes): Promise<Workout | null> {
         const workout = await Workout.findByPk(data.id);
         if (!workout) throw new Error('Workout not found');
         return workout.update(data);

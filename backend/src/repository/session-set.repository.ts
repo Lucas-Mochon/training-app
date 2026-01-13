@@ -2,19 +2,19 @@ import { UpdateSessionSetDto } from "../dto/session-set.dto";
 import SessionSet, { SessionSetCreationAttributes } from "../models/sessionSet";
 
 export class SessionSetRepository {
-    async list() {
+    async list(): Promise<SessionSet[]> {
         return SessionSet.findAll();
     }
 
-    async getOne(id: string) {
+    async getOne(id: string): Promise<SessionSet | null> {
         return SessionSet.findByPk(id);
     }
 
-    async create(data: SessionSetCreationAttributes) {
+    async create(data: SessionSetCreationAttributes): Promise<SessionSet | null> {
         return await SessionSet.create(data);
     }
 
-    async update(data: UpdateSessionSetDto) {
+    async update(data: UpdateSessionSetDto): Promise<SessionSet | null> {
         const updateData: Partial<SessionSet> = {};
 
         if (data.set_number !== null) updateData.set_number = data.set_number;
@@ -28,7 +28,7 @@ export class SessionSetRepository {
         return SessionSet.findByPk(data.id);
     }
 
-    async delete(id: string) {
+    async delete(id: string): Promise<void> {
         await SessionSet.destroy({ where: { id } });
     }
 }

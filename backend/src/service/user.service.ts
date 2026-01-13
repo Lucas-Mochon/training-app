@@ -1,5 +1,5 @@
 import { UserRepository } from '../repository/user.repository';
-import { RegisterDto, LoginDto, EditUserDto } from '../dto/user.dto';
+import { RegisterDto, LoginDto, EditUserDto, AuthResponse } from '../dto/user.dto';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import User from '../models/user';
@@ -8,14 +8,14 @@ import { Logger } from '../common/logger';
 export class UserService {
   private repo = new UserRepository();
 
-  async register(data: RegisterDto) {
+  async register(data: RegisterDto): Promise<AuthResponse> {
     const existing = await this.repo.findByEmail(data.email);
     if (existing) throw new Error('Email already used');
     const user = await this.repo.create(data);
     return this.generateTokens(user);
   }
 
-  async login(data: LoginDto) {
+  async login(data: LoginDto): Promise <AuthResponse> {
     const user = await this.repo.findByEmail(data.email);
     if (!user) throw new Error('Invalid credentials');
     const match = await bcrypt.compare(data.password, user.get('password_hash'));
@@ -23,13 +23,13 @@ export class UserService {
     return this.generateTokens(user);
   }
 
-  async refresh(refreshToken: string) {
+  async refresh(refreshToken: string): Promise<AuthResponse> {
     const user = await User.findOne({ where: { refreshToken } });
     if (!user) throw new Error('Invalid refresh token');
     return this.generateTokens(user);
   }
 
-  async edit(userId: string, data: EditUserDto) {
+  async edit(userId: string, data: EditUserDto): Promise<User | null> {
     if (data.password) {
       data.password = await bcrypt.hash(data.password, 10);
       delete data.password;
@@ -38,11 +38,11 @@ export class UserService {
     return this.repo.findById(userId);
   }
 
-  async delete(userId: string) {
+  async delete(userId: string): Promise<number> {
     return this.repo.delete(userId);
   }
 
-  async getMe(userId: string) {
+  async getMe(userId: string): Promise<User | null> {
     return this.repo.findById(userId);
   }
 

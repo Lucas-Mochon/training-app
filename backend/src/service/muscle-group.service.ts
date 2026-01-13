@@ -13,7 +13,7 @@ export class MuscleGroupService {
         return this.repo.getOne(id);
     }
 
-    async create(data: MuscleGroupCreationAttributes): Promise<MuscleGroup> {
+    async create(data: MuscleGroupCreationAttributes): Promise<MuscleGroup | null> {
         return this.repo.create(data);
     }
 

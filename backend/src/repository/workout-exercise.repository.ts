@@ -2,19 +2,19 @@ import { UpdateWorkoutExerciseDto } from "../dto/workout-exercise.dto";
 import WorkoutExercise, { WorkoutExerciseCreationAttributes } from "../models/workoutExercice";
 
 export class WorkoutExerciseRepository {
-    async list() {
+    async list(): Promise<WorkoutExercise[]> {
         return WorkoutExercise.findAll();
     }
 
-    async getOne(id: number) {
+    async getOne(id: number): Promise<WorkoutExercise | null> {
         return WorkoutExercise.findByPk(id);
     }
 
-    async create(data: WorkoutExerciseCreationAttributes) {
+    async create(data: WorkoutExerciseCreationAttributes): Promise<WorkoutExercise | null> {
         return WorkoutExercise.create(data);
     }
 
-    async update(data: UpdateWorkoutExerciseDto) {
+    async update(data: UpdateWorkoutExerciseDto): Promise<WorkoutExercise | null> {
         const updateData: Partial<WorkoutExercise> = {};
 
         if (data.sets !== null) updateData.sets = data.sets;
@@ -29,7 +29,7 @@ export class WorkoutExerciseRepository {
         return WorkoutExercise.findByPk(data.id);
     }
 
-    async delete(id: number) {
+    async delete(id: number): Promise<number> {
         return WorkoutExercise.destroy({ where: { id } });
     }
 }
