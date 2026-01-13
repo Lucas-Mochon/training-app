@@ -11,12 +11,12 @@ export interface WorkoutAttributes {
 export interface WorkoutCreationAttributes extends Optional<WorkoutAttributes, 'id'> {}
 
 class Workout extends Model<WorkoutAttributes, WorkoutCreationAttributes> implements WorkoutAttributes {
-  id!: string;
-  goal!: WorkoutGoal;
-  duration!: number;
+  declare id: string;
+  declare goal: WorkoutGoal;
+  declare duration: number;
 
-  readonly createdAt!: Date;
-  readonly updatedAt!: Date;
+  declare readonly createdAt: Date;
+  declare readonly updatedAt: Date;
 }
 
 Workout.init(

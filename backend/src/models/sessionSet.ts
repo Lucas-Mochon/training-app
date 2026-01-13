@@ -13,15 +13,15 @@ interface SessionSetAttributes {
 export interface SessionSetCreationAttributes extends Optional<SessionSetAttributes, 'id'> {}
 
 class SessionSet extends Model<SessionSetAttributes, SessionSetCreationAttributes> implements SessionSetAttributes {
-  id!: number;
-  set_number!: number;
-  reps!: number;
-  weight!: number;
-  trainingSessionId!: string;
-  exerciseId!: number;
+  declare id: number;
+  declare set_number: number;
+  declare reps: number;
+  declare weight: number;
+  declare trainingSessionId: string;
+  declare exerciseId: number;
 
-  readonly createdAt!: Date;
-  readonly updatedAt!: Date;
+  declare readonly createdAt: Date;
+  declare readonly updatedAt: Date;
 }
 
 SessionSet.init(

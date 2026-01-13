@@ -9,11 +9,11 @@ interface MuscleGroupAttributes {
 export interface MuscleGroupCreationAttributes extends Optional<MuscleGroupAttributes, 'id'> {}
 
 class MuscleGroup extends Model<MuscleGroupAttributes, MuscleGroupCreationAttributes> implements MuscleGroupAttributes {
-  id!: number;
-  name!: string;
+  declare id: number;
+  declare name: string;
 
-  readonly createdAt!: Date;
-  readonly updatedAt!: Date;
+  declare readonly createdAt: Date;
+  declare readonly updatedAt: Date;
 }
 
 MuscleGroup.init(

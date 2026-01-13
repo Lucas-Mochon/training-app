@@ -6,20 +6,22 @@ interface TrainingSessionAttributes {
   performed_at: Date;
   duration: number;
   feeling: number;
+  workoutId: string;
   userId: string;
 }
 
-interface TrainingSessionCreationAttributes extends Optional<TrainingSessionAttributes, 'id' | 'performed_at'> {}
+export interface TrainingSessionCreationAttributes extends Optional<TrainingSessionAttributes, 'id' | 'performed_at'> {}
 
 class TrainingSession extends Model<TrainingSessionAttributes, TrainingSessionCreationAttributes> implements TrainingSessionAttributes {
-  id!: string;
-  performed_at!: Date;
-  duration!: number;
-  feeling!: number;
-  userId!: string;
+  declare id: string;
+  declare performed_at: Date;
+  declare duration: number;
+  declare feeling: number;
+  declare workoutId: string;
+  declare userId: string;
 
-  readonly createdAt!: Date;
-  readonly updatedAt!: Date;
+  declare readonly createdAt: Date;
+  declare readonly updatedAt: Date;
 }
 
 TrainingSession.init(
@@ -45,9 +47,15 @@ TrainingSession.init(
         max: 5
       }
     },
+    workoutId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      field: 'workoutId'
+    },
     userId: {
       type: DataTypes.UUID,
-      allowNull: false
+      allowNull: false,
+      field: 'userId'
     }
   },
   {

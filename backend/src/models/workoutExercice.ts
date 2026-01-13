@@ -14,16 +14,16 @@ interface WorkoutExerciseAttributes {
 export interface WorkoutExerciseCreationAttributes extends Optional<WorkoutExerciseAttributes, 'id'> {}
 
 class WorkoutExercise extends Model<WorkoutExerciseAttributes, WorkoutExerciseCreationAttributes> implements WorkoutExerciseAttributes {
-  id!: number;
-  sets!: number;
-  reps!: string;
-  rest_seconds!: number;
-  order_index!: number;
-  workoutId!: string;
-  exerciseId!: string;
+  declare id: number;
+  declare sets: number;
+  declare reps: string;
+  declare rest_seconds: number;
+  declare order_index: number;
+  declare workoutId: string;
+  declare exerciseId: string;
 
-  readonly createdAt!: Date;
-  readonly updatedAt!: Date;
+  declare readonly createdAt: Date;
+  declare readonly updatedAt: Date;
 }
 
 WorkoutExercise.init(
