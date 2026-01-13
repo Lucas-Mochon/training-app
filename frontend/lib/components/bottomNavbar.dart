@@ -8,7 +8,11 @@ class BottomNavbar extends StatelessWidget {
     return BottomNavigationBar(
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Accueil'),
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Recherche'),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.fitness_center),
+          label: 'Exercices',
+        ),
+        BottomNavigationBarItem(icon: Icon(Icons.timer), label: 'Entrainement'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
       ],
       currentIndex: 0,
@@ -20,11 +24,13 @@ class BottomNavbar extends StatelessWidget {
             Navigator.pushNamed(context, '/');
             break;
           case 1:
-            Navigator.pushNamed(context, '/search');
+            Navigator.pushNamed(context, '/exercises');
             break;
           case 2:
-            Navigator.pushNamed(context, '/profile');
+            Navigator.pushNamed(context, '/workouts');
             break;
+          case 3:
+            Navigator.pushNamed(context, '/profil');
         }
       },
     );

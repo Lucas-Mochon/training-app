@@ -14,8 +14,8 @@ class RouteGenerator {
   static Route<dynamic> _errorRoute() {
     return MaterialPageRoute(
       builder: (_) => Scaffold(
-        appBar: AppBar(title: Text('Erreur')),
-        body: Center(child: Text('Page non trouvée!')),
+        appBar: AppBar(title: const Text('Erreur')),
+        body: const Center(child: Text('Page non trouvée!')),
       ),
     );
   }

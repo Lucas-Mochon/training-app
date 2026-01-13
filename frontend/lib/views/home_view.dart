@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/components/bottomNavbar.dart';
 
 class HomeView extends StatelessWidget {
   @override
@@ -25,7 +24,6 @@ class HomeView extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavbar(),
     );
   }
 
