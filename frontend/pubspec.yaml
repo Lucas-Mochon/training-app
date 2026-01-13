@@ -35,6 +35,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   http: ^1.1.0 # Pour faire les appels HTTP
   provider: ^6.0.5 # Optionnel, pour gérer l'état proprement
+  flutter_secure_storage: ^9.1.0
 
 dev_dependencies:
   flutter_test:

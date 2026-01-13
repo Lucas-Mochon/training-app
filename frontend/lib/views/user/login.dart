@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:frontend/services/user_service.dart';
+import 'package:frontend/store/auth_store.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,16 +17,13 @@ class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
   String? error;
 
-  // Ton token sera stocké ici après login
-  String? token;
-
-  void handleLogin() async {
+  Future<void> handleLogin() async {
     setState(() {
       isLoading = true;
       error = null;
     });
 
-    final userService = UserService(token: ''); // token vide pour login
+    final userService = UserService(token: '');
 
     try {
       final response = await userService.login({
@@ -32,23 +31,24 @@ class _LoginPageState extends State<LoginPage> {
         'password': passwordController.text,
       });
 
-      // Supposons que ton API renvoie { token: "..." }
-      token = response['token'];
-      print('Login réussi, token = $token');
+      final accessToken = response['data']['accessToken'];
 
-      // Tu peux naviguer vers une autre page maintenant
+      context.read<AuthStore>().setToken(accessToken);
+
+      if (!mounted) return;
+
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Login réussi !')));
+      ).showSnackBar(const SnackBar(content: Text('Login réussi 🎉')));
     } catch (e) {
       setState(() {
         error = e.toString();
       });
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
-
-    setState(() {
-      isLoading = false;
-    });
   }
 
   @override

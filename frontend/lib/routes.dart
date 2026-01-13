@@ -7,8 +7,10 @@ class RouteGenerator {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (_) => HomeView());
+
       case '/login':
-        return MaterialPageRoute(builder: (_) => LoginPage());
+        return MaterialPageRoute(builder: (_) => const LoginPage());
+
       default:
         return _errorRoute();
     }
@@ -16,10 +18,8 @@ class RouteGenerator {
 
   static Route<dynamic> _errorRoute() {
     return MaterialPageRoute(
-      builder: (_) => Scaffold(
-        appBar: AppBar(title: const Text('Erreur')),
-        body: const Center(child: Text('Page non trouvée!')),
-      ),
+      builder: (_) =>
+          const Scaffold(body: Center(child: Text('Page non trouvée'))),
     );
   }
 }
