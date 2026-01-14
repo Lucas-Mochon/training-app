@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/constants/dto/workout_detail.dart';
 import 'package:frontend/constants/enum/workout_goal_enum.dart';
 import 'package:frontend/models/workout_model.dart';
 import 'package:frontend/services/workout_service.dart';
@@ -10,6 +11,7 @@ class WorkoutStore extends ChangeNotifier {
 
   List<Workout>? workouts;
   Workout? workout;
+  WorkoutDetailResponse? workoutDetail;
   bool isLoading = false;
   String? error;
 
@@ -50,19 +52,15 @@ class WorkoutStore extends ChangeNotifier {
     notifyListeners();
 
     try {
-      if (workout?.id != id) {
-        if (workouts != null) {
-          workout = workouts
-              ?.where((w) => w.id == id)
-              .cast<Workout?>()
-              .firstOrNull;
-        } else {
-          final Map<String, dynamic> response = await workoutService.getOne(id);
-          workout = Workout.fromJson(response['data']);
-        }
-      }
+      final response = await workoutService.getOne(id);
+      final data = response['data'];
+      print(data);
+      workoutDetail = WorkoutDetailResponse.fromJson(data);
+      workout = workoutDetail!.workout;
     } catch (e) {
       error = e.toString();
+      workoutDetail = null;
+      workout = null;
     } finally {
       isLoading = false;
       notifyListeners();
@@ -110,6 +108,8 @@ class WorkoutStore extends ChangeNotifier {
       }
 
       workout = work;
+
+      workoutDetail = null;
 
       notifyListeners();
     } catch (e) {

@@ -1,4 +1,4 @@
-import 'package:frontend/constants/enum/exerciseMuscleRole_enum.dart';
+import 'package:frontend/constants/enum/exercise_muscle_role_enum.dart';
 
 class ExerciseMuscle {
   final int id;

@@ -1,5 +1,5 @@
-import 'package:frontend/constants/enum/userGoal_enum.dart';
-import 'package:frontend/constants/enum/userLevel_enum.dart';
+import 'package:frontend/constants/enum/user_goal_enum.dart';
+import 'package:frontend/constants/enum/user_level_enum.dart';
 
 class User {
   final String id;

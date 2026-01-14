@@ -31,6 +31,12 @@ Exercise.belongsToMany(Workout, {
 });
 
 /* ============================
+   Workout ↔ WorkoutExercise (1 ↔ N)
+============================ */
+Workout.hasMany(WorkoutExercise, {foreignKey: 'workoutId'});
+WorkoutExercise.belongsTo(Workout, {foreignKey: 'workoutId'});
+
+/* ============================
    Exercise ↔ MuscleGroup (N ↔ N)
 ============================ */
 Exercise.belongsToMany(MuscleGroup, {

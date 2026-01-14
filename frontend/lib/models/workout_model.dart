@@ -1,4 +1,4 @@
-import 'package:frontend/constants/enum/workoutGoal_enum.dart';
+import 'package:frontend/constants/enum/workout_goal_enum.dart';
 
 class Workout {
   final String id;

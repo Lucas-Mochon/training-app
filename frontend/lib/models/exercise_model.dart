@@ -1,5 +1,5 @@
-import 'package:frontend/constants/enum/exerciseDifficulty_enum.dart';
-import 'package:frontend/constants/enum/exerciseEquipment_enum.dart';
+import 'package:frontend/constants/enum/exercise_difficulty_enum.dart';
+import 'package:frontend/constants/enum/exercise_equipment_enum.dart';
 
 class Exercise {
   final int id;
@@ -23,7 +23,6 @@ class Exercise {
     this.updatedAt,
   });
 
-  // Conversion JSON -> objet
   factory Exercise.fromJson(Map<String, dynamic> json) {
     return Exercise(
       id: json['id'],
