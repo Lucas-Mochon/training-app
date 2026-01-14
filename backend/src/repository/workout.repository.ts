@@ -6,7 +6,8 @@ import { WhereOptions } from 'sequelize';
 export class WorkoutRepository {
     static async list(filter: FilterListWorkouts): Promise<Workout[]> {
         const where: WhereOptions<WorkoutAttributes> = {};
-
+        
+        where.userId = filter.userId;
         if (filter.goal) where.goal = filter.goal;
         if (filter.duration) where.duration = filter.duration;
 

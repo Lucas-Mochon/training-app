@@ -21,6 +21,10 @@ class BottomNavbar extends StatelessWidget {
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Accueil'),
         BottomNavigationBarItem(
+          icon: Icon(Icons.sports_gymnastics),
+          label: 'Entrainements',
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.fitness_center),
           label: 'Exercices',
         ),

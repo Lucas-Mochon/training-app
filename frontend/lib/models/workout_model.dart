@@ -4,6 +4,7 @@ class Workout {
   final String id;
   final Workoutgoal goal;
   final int duration;
+  final String userId;
 
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -12,6 +13,7 @@ class Workout {
     required this.id,
     required this.goal,
     required this.duration,
+    required this.userId,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -21,6 +23,7 @@ class Workout {
       id: json['id'],
       goal: Workoutgoal.fromString(json['goal']),
       duration: json['duration'],
+      userId: json['userId'],
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
     );
@@ -31,6 +34,7 @@ class Workout {
       'id': id,
       'duration': duration,
       'goal': goal.value,
+      'userId': userId,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };

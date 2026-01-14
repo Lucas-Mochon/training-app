@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/app.dart';
 import 'package:frontend/store/auth_store.dart';
+import 'package:frontend/store/page/user/profil_store.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(create: (_) => AuthStore(), child: const MyApp()),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthStore()),
+        ChangeNotifierProvider(
+          create: (context) =>
+              ProfileStore(authStore: context.read<AuthStore>()),
+        ),
+      ],
+      child: const MyApp(),
+    ),
   );
 }
 

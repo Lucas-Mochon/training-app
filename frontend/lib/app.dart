@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/components/bottomNavbar.dart';
-// import 'package:frontend/components/bottomNavbar.dart';
-// import 'package:frontend/navigator.dart';
 import 'package:frontend/store/auth_store.dart';
+// import 'package:frontend/store/page/user/profil_store.dart';
 import 'package:frontend/views/exercise/index.dart';
 import 'package:frontend/views/home_view.dart';
 import 'package:frontend/views/user/login.dart';
 import 'package:frontend/views/user/profil.dart';
+import 'package:frontend/views/workout/index.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatefulWidget {
@@ -19,7 +19,18 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   int _currentIndex = 0;
 
-  final _pages = [HomeView(), ExercisePage(), ProfilePage()];
+  late final List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      const HomeView(),
+      const WorkoutPage(),
+      const ExercisePage(),
+      const ProfilePage(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -6,6 +6,7 @@ export interface WorkoutAttributes {
   id: string;
   goal: WorkoutGoal;
   duration: number;
+  userId: string;
 }
 
 export interface WorkoutCreationAttributes extends Optional<WorkoutAttributes, 'id'> {}
@@ -14,6 +15,7 @@ class Workout extends Model<WorkoutAttributes, WorkoutCreationAttributes> implem
   declare id: string;
   declare goal: WorkoutGoal;
   declare duration: number;
+  declare userId: string;
 
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
@@ -32,6 +34,10 @@ Workout.init(
     },
     duration: {
       type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    userId: {
+      type: DataTypes.UUID,
       allowNull: false
     }
   },
