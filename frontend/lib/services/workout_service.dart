@@ -9,8 +9,26 @@ class WorkoutService extends BaseService {
         authStore: authStore,
       );
 
-  Future<Map<String, dynamic>> list(String userId) async {
-    final queryParams = {'userId': userId};
+  Future<Map<String, dynamic>> list(
+    String userId,
+    int? minDuration,
+    int? maxDuration,
+    Workoutgoal? goal,
+  ) async {
+    final Map<String, dynamic> queryParams = {'userId': userId};
+
+    if (minDuration != null) {
+      queryParams['minDuration'] = minDuration.toString();
+    }
+
+    if (maxDuration != null) {
+      queryParams['maxDuration'] = maxDuration.toString();
+    }
+
+    if (goal?.name != null) {
+      queryParams['goal'] = goal!.name;
+    }
+
     final uri = Uri(path: '/', queryParameters: queryParams).toString();
     return await get(uri);
   }

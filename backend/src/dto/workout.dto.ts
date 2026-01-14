@@ -2,6 +2,7 @@ import { WorkoutGoal } from "../enum/workout-goal.enum";
 
 export interface FilterListWorkouts {
     userId: string;
-    duration?: number;
+    minDuration?: number;
+    maxDuration?: number;
     goal?: WorkoutGoal;
 }

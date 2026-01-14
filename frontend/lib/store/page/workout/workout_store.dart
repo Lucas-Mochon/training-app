@@ -17,13 +17,22 @@ class WorkoutStore extends ChangeNotifier {
     workoutService = WorkoutService(authStore: authStore);
   }
 
-  Future<void> getList(String userId) async {
+  Future<void> getList(
+    String userId,
+    int? minDuration,
+    int? maxDuration,
+    Workoutgoal? goal,
+  ) async {
     isLoading = true;
     error = null;
     notifyListeners();
-
     try {
-      final Map<String, dynamic> response = await workoutService.list(userId);
+      final Map<String, dynamic> response = await workoutService.list(
+        userId,
+        minDuration,
+        maxDuration,
+        goal,
+      );
       workouts = (response['data'] as List)
           .map((item) => Workout.fromJson(item))
           .toList();
