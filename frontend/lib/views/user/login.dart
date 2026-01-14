@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/store/page/profil_store.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:frontend/store/auth_store.dart';
@@ -34,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
       final data = response['data'];
       final accessToken = data['accessToken'];
       final refreshToken = data['user']?['refreshToken'];
+      final user = data['user'];
 
       if (accessToken != null) {
         await context.read<AuthStore>().setToken(accessToken);
@@ -42,6 +44,8 @@ class _LoginPageState extends State<LoginPage> {
       if (refreshToken != null) {
         await context.read<AuthStore>().setRefreshToken(refreshToken);
       }
+
+      ProfileStore(authStore: AuthStore()).user = user;
 
       if (!mounted) return;
 
