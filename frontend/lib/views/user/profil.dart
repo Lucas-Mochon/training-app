@@ -21,7 +21,7 @@ class ProfilePage extends StatelessWidget {
           if (store.error != null) {
             return Scaffold(
               appBar: AppBar(title: const Text('Profile')),
-              body: Center(child: Text('Erreur : ${store.error}')),
+              body: Center(child: Text('Erreur lors de la connexion')),
             );
           }
 
