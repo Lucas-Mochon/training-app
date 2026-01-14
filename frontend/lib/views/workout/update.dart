@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/constants/enum/workoutGoal_enum.dart';
+import 'package:frontend/constants/enum/workout_goal_enum.dart';
 import 'package:frontend/models/workout_model.dart';
 import 'package:frontend/store/page/workout/workout_store.dart';
 import 'package:provider/provider.dart';
