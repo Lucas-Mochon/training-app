@@ -1,3 +1,4 @@
+import 'package:frontend/constants/enum/workoutGoal_enum.dart';
 import 'package:frontend/services/base_service.dart';
 import 'package:frontend/store/auth_store.dart';
 
@@ -16,5 +17,29 @@ class WorkoutService extends BaseService {
 
   Future<Map<String, dynamic>> getOne(String id) async {
     return await get('/$id');
+  }
+
+  Future<Map<String, dynamic>> create(
+    String userId,
+    int duration,
+    Workoutgoal goal,
+  ) async {
+    return await post('/create', {
+      'userId': userId,
+      'duration': duration,
+      'goal': goal.value,
+    });
+  }
+
+  Future<Map<String, dynamic>> update(
+    String id,
+    int duration,
+    Workoutgoal goal,
+  ) async {
+    return await put('/update', {
+      'id': id,
+      'duration': duration,
+      'goal': goal.value,
+    });
   }
 }

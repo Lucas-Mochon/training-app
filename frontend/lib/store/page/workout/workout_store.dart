@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/constants/enum/workoutGoal_enum.dart';
 import 'package:frontend/models/workout_model.dart';
 import 'package:frontend/services/workout_service.dart';
 import 'package:frontend/store/auth_store.dart';
@@ -51,6 +52,57 @@ class WorkoutStore extends ChangeNotifier {
           workout = Workout.fromJson(response['data']);
         }
       }
+    } catch (e) {
+      error = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> create(String userId, int duration, Workoutgoal goal) async {
+    isLoading = true;
+    error = null;
+    notifyListeners();
+
+    try {
+      final Map<String, dynamic> response = await workoutService.create(
+        userId,
+        duration,
+        goal,
+      );
+      Workout work = Workout.fromJson(response['data']);
+      workouts?.add(work);
+      notifyListeners();
+    } catch (e) {
+      error = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> update(String id, int duration, Workoutgoal goal) async {
+    isLoading = true;
+    error = null;
+    notifyListeners();
+
+    try {
+      final Map<String, dynamic> response = await workoutService.update(
+        id,
+        duration,
+        goal,
+      );
+      Workout work = Workout.fromJson(response['data']);
+
+      final index = workouts?.indexWhere((w) => w.id == id) ?? -1;
+      if (index >= 0) {
+        workouts?[index] = work;
+      }
+
+      workout = work;
+
+      notifyListeners();
     } catch (e) {
       error = e.toString();
     } finally {
