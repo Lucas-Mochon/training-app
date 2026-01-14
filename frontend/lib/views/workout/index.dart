@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/constants/enum/workoutGoal_enum.dart';
+import 'package:frontend/constants/enum/workout_goal_enum.dart';
 import 'package:frontend/store/page/user/profil_store.dart';
 import 'package:frontend/store/page/workout/workout_store.dart';
 import 'package:frontend/views/workout/create.dart';
@@ -209,7 +209,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                                 value: goal,
                                 child: Text(goal.name),
                               );
-                            }).toList(),
+                            }),
                           ],
                           onChanged: (value) {
                             setState(() => _selectedGoal = value);

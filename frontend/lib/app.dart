@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/components/bottomNavbar.dart';
+import 'package:frontend/components/bottom_navbar.dart';
 import 'package:frontend/store/auth_store.dart';
-// import 'package:frontend/store/page/user/profil_store.dart';
 import 'package:frontend/views/exercise/index.dart';
 import 'package:frontend/views/home_view.dart';
 import 'package:frontend/views/user/login.dart';
