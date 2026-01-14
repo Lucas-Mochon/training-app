@@ -5,18 +5,14 @@ class BottomNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentRoute = ModalRoute.of(context)?.settings.name;
+    final currentRoute = ModalRoute.of(context)?.settings.name ?? '/';
 
-    int currentIndex = switch (currentRoute) {
-      '/' => 0,
-      '/exercises' => 1,
-      '/workouts' => 2,
-      '/profile' => 3,
-      _ => 0,
-    };
+    final routes = ['/', '/exercises', '/workouts', '/profile'];
+    final currentIndex = routes.indexOf(currentRoute);
+    final safeIndex = currentIndex == -1 ? 0 : currentIndex;
 
     return BottomNavigationBar(
-      currentIndex: currentIndex,
+      currentIndex: safeIndex,
       selectedItemColor: const Color(0xFFD32F2F),
       unselectedItemColor: Colors.grey,
       items: const [
@@ -29,20 +25,8 @@ class BottomNavbar extends StatelessWidget {
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
       ],
       onTap: (index) {
-        switch (index) {
-          case 0:
-            Navigator.pushReplacementNamed(context, '/');
-            break;
-          case 1:
-            Navigator.pushReplacementNamed(context, '/exercises');
-            break;
-          case 2:
-            Navigator.pushReplacementNamed(context, '/workouts');
-            break;
-          case 3:
-            Navigator.pushReplacementNamed(context, '/profile');
-            break;
-        }
+        String route = routes[index];
+        Navigator.pushReplacementNamed(context, route);
       },
     );
   }

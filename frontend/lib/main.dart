@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/app.dart';
 import 'package:frontend/store/auth_store.dart';
+import 'package:frontend/views/user/login.dart';
+import 'package:frontend/views/user/profil.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -29,7 +31,19 @@ class MyApp extends StatelessWidget {
           bodyMedium: TextStyle(color: Colors.white70),
         ),
       ),
-      home: const App(),
+      routes: {
+        '/login': (context) => const LoginPage(),
+        '/profile': (context) => const ProfilePage(),
+      },
+      home: Consumer<AuthStore>(
+        builder: (context, authStore, _) {
+          if (!authStore.isAuthenticated) {
+            return const LoginPage();
+          } else {
+            return const App();
+          }
+        },
+      ),
     );
   }
 }

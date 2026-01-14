@@ -46,12 +46,13 @@ export class UserService {
     return this.repo.findById(userId);
   }
 
-  generateTokens(user: User) {
+  async generateTokens(user: User) {
     const payload = { userId: user.get('id') };
     const accessToken = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '30m' });
     const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET!, { expiresIn: '7d' });
 
-    this.repo.updateRefreshToken(user.get('id'), refreshToken);
+    const userRefresh = await this.repo.updateRefreshToken(user.get('id'), refreshToken);
+    if (userRefresh != null) user = userRefresh;
     Logger.info(`Generated tokens for user ${user.get('email')}`);
 
     return { accessToken, user };

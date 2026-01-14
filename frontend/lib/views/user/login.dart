@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
       error = null;
     });
 
-    final userService = UserService(token: '');
+    final userService = UserService(authStore: AuthStore());
 
     try {
       final response = await userService.login({
@@ -31,9 +31,17 @@ class _LoginPageState extends State<LoginPage> {
         'password': passwordController.text,
       });
 
-      final accessToken = response['data']['accessToken'];
+      final data = response['data'];
+      final accessToken = data['accessToken'];
+      final refreshToken = data['user']?['refreshToken'];
 
-      context.read<AuthStore>().setToken(accessToken);
+      if (accessToken != null) {
+        await context.read<AuthStore>().setToken(accessToken);
+      }
+
+      if (refreshToken != null) {
+        await context.read<AuthStore>().setRefreshToken(refreshToken);
+      }
 
       if (!mounted) return;
 

@@ -1,8 +1,9 @@
 import 'package:frontend/services/base_service.dart';
+import 'package:frontend/store/auth_store.dart';
 
 class UserService extends BaseService {
-  UserService({required String token})
-    : super(baseUrl: 'http://localhost:3000/api/users', token: token);
+  UserService({required AuthStore authStore})
+    : super(baseUrl: 'http://localhost:3000/api/users', authStore: authStore);
 
   Future<Map<String, dynamic>> register(Map<String, dynamic> data) async {
     return await post('/register', data);

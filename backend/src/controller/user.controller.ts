@@ -50,7 +50,7 @@ export class UserController {
     try {
         // @ts-ignore
         const user = await service.getMe(req.user.userId);
-        return res.json(new SuccessResponse('User get successfully', user));
+        return res.status(200).json(new SuccessResponse('User get successfully', user));
     } catch (err: any) {
         return res.status(400).json(
             new ErrorResponse(err.message)

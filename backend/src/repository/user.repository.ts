@@ -16,12 +16,13 @@ export class UserRepository {
   }
 
   async update(id: string, data: any): Promise<User | null> {
-    User.update(data, { where: { id } });
+    await User.update(data, { where: { id } });
     return User.findByPk(id);
   }
 
-  async updateRefreshToken(id: string, refreshToken: string | null): Promise<[number]> {
-    return User.update({ refreshToken }, { where: { id } });
+  async updateRefreshToken(id: string, refreshToken: string | null): Promise<User | null> {
+    await User.update({ refreshToken }, { where: { id } });
+    return User.findByPk(id);
   }
 
   async delete(id: string): Promise<number> {
