@@ -3,6 +3,7 @@ import 'package:frontend/constants/dto/workout_detail.dart';
 import 'package:frontend/store/page/workout/workout_store.dart';
 import 'package:frontend/views/workout/update.dart';
 import 'package:frontend/views/workout_exercise/create.dart';
+import 'package:frontend/views/workout_exercise/update.dart';
 import 'package:provider/provider.dart';
 
 class WorkoutDetailPage extends StatefulWidget {
@@ -25,160 +26,176 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<WorkoutStore>(
-      builder: (context, store, _) {
-        if (store.isLoading) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          await context.read<WorkoutStore>().getOne(widget.workoutId);
         }
+      },
+      child: Consumer<WorkoutStore>(
+        builder: (context, store, _) {
+          if (store.isLoading) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
 
-        if (store.error != null) {
+          if (store.error != null) {
+            return Scaffold(
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.error_outline,
+                      size: 48,
+                      color: Colors.red,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Erreur : ${store.error}',
+                      style: const TextStyle(fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Retour'),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          if (store.workoutDetail == null) {
+            return const Scaffold(
+              body: Center(
+                child: Text(
+                  'Aucun entraînement disponible',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            );
+          }
+
+          final detail = store.workoutDetail!;
+          final workout = detail.workout;
+
           return Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error_outline, size: 48, color: Colors.red),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Erreur : ${store.error}',
-                    style: const TextStyle(fontSize: 16),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('Retour'),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-
-        if (store.workoutDetail == null) {
-          return const Scaffold(
-            body: Center(
-              child: Text(
-                'Aucun entraînement disponible',
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-          );
-        }
-
-        final detail = store.workoutDetail!;
-        final workout = detail.workout;
-
-        return Scaffold(
-          appBar: AppBar(title: Text(workout.goal.name), elevation: 0),
-          body: SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    workout.goal.name,
-                    style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      children: [
-                        _buildInfoRow(
-                          'Durée',
-                          '${workout.duration} minutes',
-                          Icons.timer,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildInfoRow('Objectif', workout.goal.name, Icons.tab),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 32),
-
-                  // Titre Exercices
-                  Text(
-                    'Exercices (${detail.exercises.length})',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 12),
-                  if (detail.exercises.isEmpty)
-                    Container(
-                      padding: const EdgeInsets.all(24),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey[300]!),
-                        borderRadius: BorderRadius.circular(8),
+            appBar: AppBar(title: Text(workout.goal.name), elevation: 0),
+            body: SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      workout.goal.name,
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
                       ),
-                      child: Center(
-                        child: Text(
-                          'Aucun exercice ajouté',
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 14,
+                    ),
+                    const SizedBox(height: 24),
+
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.blue.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        children: [
+                          _buildInfoRow(
+                            'Durée',
+                            '${workout.duration} minutes',
+                            Icons.timer,
+                          ),
+                          const SizedBox(height: 16),
+                          _buildInfoRow(
+                            'Objectif',
+                            workout.goal.name,
+                            Icons.tab,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Titre Exercices
+                    Text(
+                      'Exercices (${detail.exercises.length})',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 12),
+                    if (detail.exercises.isEmpty)
+                      Container(
+                        padding: const EdgeInsets.all(24),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey[300]!),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Aucun exercice ajouté',
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 14,
+                            ),
                           ),
                         ),
+                      )
+                    else
+                      Column(
+                        children: detail.exercises.map((item) {
+                          return _buildExerciseCard(item);
+                        }).toList(),
                       ),
-                    )
-                  else
-                    Column(
-                      children: detail.exercises.map((item) {
-                        return _buildExerciseCard(item);
-                      }).toList(),
-                    ),
 
-                  const SizedBox(height: 32),
+                    const SizedBox(height: 32),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      OutlinedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WorkoutExerciseCreatePage(
-                                workoutId: widget.workoutId,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        OutlinedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => WorkoutExerciseCreatePage(
+                                  workoutId: widget.workoutId,
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.add),
-                        label: const Text('Ajouter un exercice'),
-                      ),
-                      const SizedBox(width: 12),
-                      FloatingActionButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  WorkoutUpdatePage(workout: workout),
-                            ),
-                          );
-                        },
-                        child: const Icon(Icons.edit),
-                      ),
-                    ],
-                  ),
-                ],
+                            );
+                          },
+                          icon: const Icon(Icons.add),
+                          label: const Text('Ajouter un exercice'),
+                        ),
+                        const SizedBox(width: 12),
+                        FloatingActionButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    WorkoutUpdatePage(workout: workout),
+                              ),
+                            );
+                          },
+                          child: const Icon(Icons.edit),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
@@ -228,11 +245,33 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            exercise.name,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Text(
+                  exercise.name,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WorkoutExerciseUpdatePage(
+                        workoutExerciseId: workoutExercise.id,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
           const SizedBox(height: 8),
 

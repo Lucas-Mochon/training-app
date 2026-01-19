@@ -38,6 +38,7 @@ class WorkoutExerciseService extends BaseService {
     int? orderIndex,
   ) async {
     return await put('/update', {
+      'id': id,
       'sets': sets,
       'reps': reps,
       'rest_seconds': restSeconds,

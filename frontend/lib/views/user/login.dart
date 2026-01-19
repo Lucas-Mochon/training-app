@@ -48,10 +48,6 @@ class _LoginPageState extends State<LoginPage> {
       ProfileStore(authStore: AuthStore()).user = user;
 
       if (!mounted) return;
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Login réussi 🎉')));
     } catch (e) {
       setState(() {
         error = e.toString();

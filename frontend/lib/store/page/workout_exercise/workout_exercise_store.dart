@@ -93,7 +93,7 @@ class WorkoutExerciseStore extends ChangeNotifier {
       }
 
       workoutExcercise = workExo;
-
+      await workoutStore.getOne(workExo.workoutId);
       notifyListeners();
     } catch (e) {
       error = e.toString();

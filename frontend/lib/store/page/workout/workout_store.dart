@@ -54,7 +54,6 @@ class WorkoutStore extends ChangeNotifier {
     try {
       final response = await workoutService.getOne(id);
       final data = response['data'];
-      print(data);
       workoutDetail = WorkoutDetailResponse.fromJson(data);
       workout = workoutDetail!.workout;
     } catch (e) {
