@@ -1,0 +1,16 @@
+services:
+  backend:
+    build: ./backend
+    container_name: backend-node
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+
+  workout-agent:
+    build: ./workout_builder_agent
+    container_name: workout-agent
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./workout_builder_agent:/app

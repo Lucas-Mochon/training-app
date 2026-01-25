@@ -6,8 +6,8 @@
       "type": "node",
       "request": "launch",
       "cwd": "${workspaceFolder}/backend",
-      "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["dev"],
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
       "console": "integratedTerminal",
       "restart": true,
       "skipFiles": ["<node_internals>/**"]
