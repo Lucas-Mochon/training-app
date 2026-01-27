@@ -3,6 +3,7 @@ import 'package:frontend/components/bottom_navbar.dart';
 import 'package:frontend/store/auth_store.dart';
 import 'package:frontend/views/exercise/index.dart';
 import 'package:frontend/views/home_view.dart';
+import 'package:frontend/views/training/index.dart';
 import 'package:frontend/views/user/login.dart';
 import 'package:frontend/views/user/profil.dart';
 import 'package:frontend/views/workout/index.dart';
@@ -26,8 +27,9 @@ class _AppState extends State<App> {
     _pages = [
       const HomeView(),
       const WorkoutPage(),
+      const TrainingPage(),
       const ExercisePage(),
-      const ProfilePage(),
+      const ProfilPage(),
     ];
   }
 

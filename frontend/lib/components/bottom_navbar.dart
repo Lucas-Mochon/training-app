@@ -25,6 +25,10 @@ class BottomNavbar extends StatelessWidget {
           label: 'Entrainements',
         ),
         BottomNavigationBarItem(
+          icon: Icon(Icons.flash_on),
+          label: 'Entrainements réalisé',
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.fitness_center),
           label: 'Exercices',
         ),

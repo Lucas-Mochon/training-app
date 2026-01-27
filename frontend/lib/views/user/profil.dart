@@ -1,84 +1,175 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/store/auth_store.dart';
 import 'package:frontend/store/page/user/profil_store.dart';
 import 'package:provider/provider.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class ProfilPage extends StatefulWidget {
+  const ProfilPage({super.key});
+
+  @override
+  State<ProfilPage> createState() => _ProfilPageState();
+}
+
+class _ProfilPageState extends State<ProfilPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ProfileStore>().fetchProfile();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => ProfileStore(authStore: context.read<AuthStore>()),
-      child: Consumer<ProfileStore>(
-        builder: (context, store, _) {
-          if (store.isLoading || store.user == null) {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          }
+    return Consumer<ProfileStore>(
+      builder: (context, store, _) {
+        if (store.isLoading) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
 
-          if (store.error != null) {
-            return Scaffold(
-              appBar: AppBar(title: const Text('Profile')),
-              body: Center(child: Text('Erreur lors de la connexion')),
-            );
-          }
-
-          final user = store.user!;
-
+        if (store.error != null) {
           return Scaffold(
-            appBar: AppBar(
-              title: const Text('Mon Profil'),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.logout),
-                  onPressed: () {
-                    store.logout();
-                    Navigator.of(context).pushReplacementNamed('/login');
-                  },
-                ),
-              ],
-            ),
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
+            body: Center(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildInfoRow('Email', user['email'] ?? '—'),
-                  _buildInfoRow('Level', user['level'] ?? '—'),
-                  _buildInfoRow('Goal', user['goal'] ?? '—'),
-                  _buildInfoRow('Créé le', _formatDateSafe(user['createdAt'])),
-                  _buildInfoRow(
-                    'Dernière mise à jour',
-                    _formatDateSafe(user['updatedAt']),
+                  const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                  const SizedBox(height: 16),
+                  Text('Erreur : ${store.error}', textAlign: TextAlign.center),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: store.fetchProfile,
+                    child: const Text('Réessayer'),
                   ),
-                  const SizedBox(height: 20),
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     // TODO: Ajouter édition du profil
-                  //   },
-                  //   child: const Text('Modifier mon profil'),
-                  // ),
                 ],
               ),
             ),
           );
-        },
-      ),
+        }
+
+        final user = store.user;
+
+        if (user == null) {
+          return const Scaffold(
+            body: Center(child: Text('Aucune donnée utilisateur')),
+          );
+        }
+
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Mon Profil'),
+            elevation: 0,
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.logout),
+                onPressed: () {
+                  store.logout();
+                  Navigator.pushReplacementNamed(context, '/login');
+                },
+              ),
+            ],
+          ),
+          body: SafeArea(
+            child: ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                Column(
+                  children: [
+                    const CircleAvatar(
+                      radius: 40,
+                      child: Icon(Icons.person, size: 40),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      user['email'] ?? '—',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 24),
+
+                Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Informations',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        const SizedBox(height: 12),
+                        _infoRow(
+                          Icons.bar_chart,
+                          'Niveau',
+                          user['level'] ?? '—',
+                        ),
+                        _infoRow(Icons.flag, 'Objectif', user['goal'] ?? '—'),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Dates',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        const SizedBox(height: 12),
+                        _infoRow(
+                          Icons.calendar_today,
+                          'Créé le',
+                          _formatDateSafe(user['createdAt']),
+                        ),
+                        _infoRow(
+                          Icons.update,
+                          'Dernière mise à jour',
+                          _formatDateSafe(user['updatedAt']),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildInfoRow(String label, String value) {
+  Widget _infoRow(IconData icon, String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
-          Text(
-            '$label : ',
-            style: const TextStyle(fontWeight: FontWeight.bold),
+          Icon(icon, size: 20, color: Colors.grey[600]),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              label,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
           ),
-          Expanded(child: Text(value)),
+          Text(value),
         ],
       ),
     );
@@ -88,7 +179,8 @@ class ProfilePage extends StatelessWidget {
     if (isoDate == null) return '—';
     try {
       final date = DateTime.parse(isoDate);
-      return '${date.day}/${date.month}/${date.year} à ${date.hour}:${date.minute.toString().padLeft(2, '0')}';
+      return '${date.day}/${date.month}/${date.year} à '
+          '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
     } catch (_) {
       return isoDate;
     }
