@@ -151,8 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
       if (refreshToken != null) {
         await context.read<AuthStore>().setRefreshToken(refreshToken);
       }
-
-      ProfileStore(authStore: AuthStore()).user = user;
+      ProfileStore(authStore: context.read<AuthStore>()).user = user;
 
       if (!mounted) return;
 
@@ -166,7 +165,7 @@ class _RegisterPageState extends State<RegisterPage> {
       await Future.delayed(const Duration(milliseconds: 500));
 
       if (mounted) {
-        return;
+        Navigator.of(context).pop();
       }
     } on FormatException catch (e) {
       final errorMsg = _getErrorMessage(e.toString());
