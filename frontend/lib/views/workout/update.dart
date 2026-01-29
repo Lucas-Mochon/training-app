@@ -58,13 +58,9 @@ class _WorkoutUpdatePageState extends State<WorkoutUpdatePage> {
         _selectedGoal,
       );
 
+      await Future.delayed(const Duration(milliseconds: 100));
+
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Entraînement modifié avec succès !'),
-            backgroundColor: Colors.green,
-          ),
-        );
         Navigator.pop(context);
       }
     } catch (e) {

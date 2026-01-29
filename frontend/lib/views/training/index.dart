@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/trainingSession_model.dart';
-import 'package:frontend/store/auth_store.dart';
 import 'package:frontend/store/page/training/training_store.dart';
 import 'package:frontend/views/training/create.dart';
 import 'package:frontend/views/training/detail.dart';
@@ -88,13 +87,7 @@ class _TrainingPageState extends State<TrainingPage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => ChangeNotifierProvider(
-                    create: (context) =>
-                        Trainingstore(authStore: context.read<AuthStore>()),
-                    child: const TrainingCreatePage(),
-                  ),
-                ),
+                MaterialPageRoute(builder: (_) => const TrainingCreatePage()),
               );
             },
             child: const Icon(Icons.add),

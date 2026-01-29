@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/store/page/exercise/exercise_store.dart';
-import 'package:frontend/store/page/workout/workout_store.dart';
 import 'package:frontend/store/page/workout_exercise/workout_exercise_store.dart';
 import 'package:provider/provider.dart';
 
@@ -149,15 +148,15 @@ class _WorkoutExerciseUpdatePageState extends State<WorkoutExerciseUpdatePage> {
         _repsController.text.isNotEmpty ? _repsController.text : null,
         restSeconds,
         orderIndex,
+        context,
       );
 
       if (mounted) {
-        final workoutStore = context.read<WorkoutStore>();
-        while (workoutStore.isLoading) {
-          await Future.delayed(const Duration(milliseconds: 100));
-        }
+        await Future.delayed(const Duration(milliseconds: 100));
 
-        if (mounted) Navigator.pop(context);
+        if (mounted) {
+          Navigator.pop(context);
+        }
       }
     } catch (e) {
       if (mounted) {
@@ -224,7 +223,6 @@ class _WorkoutExerciseUpdatePageState extends State<WorkoutExerciseUpdatePage> {
 
                         const SizedBox(height: 24),
 
-                        // Séries
                         Text(
                           'Séries (optionnel)',
                           style: Theme.of(context).textTheme.titleMedium,
@@ -244,7 +242,6 @@ class _WorkoutExerciseUpdatePageState extends State<WorkoutExerciseUpdatePage> {
 
                         const SizedBox(height: 24),
 
-                        // Répétitions
                         Text(
                           'Répétitions (optionnel)',
                           style: Theme.of(context).textTheme.titleMedium,
@@ -264,7 +261,6 @@ class _WorkoutExerciseUpdatePageState extends State<WorkoutExerciseUpdatePage> {
 
                         const SizedBox(height: 24),
 
-                        // Repos
                         Text(
                           'Repos (secondes, optionnel)',
                           style: Theme.of(context).textTheme.titleMedium,
@@ -285,7 +281,6 @@ class _WorkoutExerciseUpdatePageState extends State<WorkoutExerciseUpdatePage> {
 
                         const SizedBox(height: 24),
 
-                        // Ordre
                         Text(
                           'Ordre (optionnel)',
                           style: Theme.of(context).textTheme.titleMedium,
@@ -305,7 +300,6 @@ class _WorkoutExerciseUpdatePageState extends State<WorkoutExerciseUpdatePage> {
 
                         const SizedBox(height: 32),
 
-                        // Bouton Modifier
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton.icon(

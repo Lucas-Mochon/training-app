@@ -106,11 +106,16 @@ class WorkoutStore extends ChangeNotifier {
         workouts?[index] = work;
       }
 
-      workout = work;
-
-      workoutDetail = null;
-
-      notifyListeners();
+      try {
+        final response = await workoutService.getOne(id);
+        final data = response['data'];
+        workoutDetail = WorkoutDetailResponse.fromJson(data);
+        workout = workoutDetail!.workout;
+      } catch (e) {
+        error = e.toString();
+        workoutDetail = null;
+        workout = null;
+      }
     } catch (e) {
       error = e.toString();
     } finally {

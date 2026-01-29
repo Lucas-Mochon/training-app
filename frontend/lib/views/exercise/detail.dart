@@ -121,37 +121,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
                       ),
                       const SizedBox(height: 24),
                     ],
-
-                    // _buildDetailRow('Catégorie', exercise. ?? 'N/A'),
-                    // const SizedBox(height: 12),
-                    // _buildDetailRow('Difficulté', exercise.difficulty ?? 'N/A'),
-                    // const SizedBox(height: 12),
-                    // _buildDetailRow('Durée', exercise.duration ?? 'N/A'),
                     const SizedBox(height: 32),
-
-                    // Boutons d'action
-                    // Row(
-                    //   children: [
-                    //     Expanded(
-                    //       child: ElevatedButton.icon(
-                    //         onPressed: () {
-                    //           // Action: Commencer l'exercice
-                    //         },
-                    //         icon: const Icon(Icons.play_arrow),
-                    //         label: const Text('Commencer'),
-                    //       ),
-                    //     ),
-                    //     const SizedBox(width: 12),
-                    //     Expanded(
-                    //       child: OutlinedButton.icon(
-                    //         onPressed: () {
-                    //         },
-                    //         icon: const Icon(Icons.favorite_border),
-                    //         label: const Text('Favoris'),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
                   ],
                 ),
               ),
@@ -161,27 +131,4 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
       ),
     );
   }
-
-  // Widget _buildDetailRow(String label, String value) {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //     children: [
-  //       Text(
-  //         label,
-  //         style: const TextStyle(
-  //           fontSize: 14,
-  //           fontWeight: FontWeight.w500,
-  //           color: Colors.grey,
-  //         ),
-  //       ),
-  //       Text(
-  //         value,
-  //         style: const TextStyle(
-  //           fontSize: 14,
-  //           fontWeight: FontWeight.bold,
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
 }

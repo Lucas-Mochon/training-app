@@ -93,12 +93,6 @@ class _TrainingCreatePageState extends State<TrainingCreatePage> {
       );
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Entraînement créé 💪'),
-            backgroundColor: Colors.green,
-          ),
-        );
         Navigator.pop(context);
       }
     } catch (e) {

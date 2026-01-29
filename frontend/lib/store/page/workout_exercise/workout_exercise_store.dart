@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 class WorkoutExerciseStore extends ChangeNotifier {
   final AuthStore authStore;
   late final WorkoutExerciseService workoutExcerciseService;
-  late final WorkoutStore workoutStore;
 
   List<WorkoutExercise>? workoutExcercises;
   WorkoutExercise? workoutExcercise;
@@ -62,6 +61,7 @@ class WorkoutExerciseStore extends ChangeNotifier {
       final Map<String, dynamic> response = await workoutExcerciseService
           .create(workoutId, exerciseId, sets, reps, restSeconds, orderIndex);
       WorkoutExercise workExo = WorkoutExercise.fromJson(response['data']);
+
       await context.read<WorkoutStore>().getOne(workExo.workoutId);
     } catch (e) {
       error = e.toString();
@@ -77,6 +77,7 @@ class WorkoutExerciseStore extends ChangeNotifier {
     String? reps,
     int? restSeconds,
     int? orderIndex,
+    BuildContext context,
   ) async {
     isLoading = true;
     error = null;
@@ -93,8 +94,8 @@ class WorkoutExerciseStore extends ChangeNotifier {
       }
 
       workoutExcercise = workExo;
-      await workoutStore.getOne(workExo.workoutId);
-      notifyListeners();
+
+      await context.read<WorkoutStore>().getOne(workExo.workoutId);
     } catch (e) {
       error = e.toString();
     } finally {
