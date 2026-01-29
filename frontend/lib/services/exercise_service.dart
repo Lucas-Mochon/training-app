@@ -15,4 +15,12 @@ class ExerciseService extends BaseService {
   Future<Map<String, dynamic>> getOne(int id) async {
     return await get('/$id');
   }
+
+  Future<Map<String, dynamic>> create(Map<String, dynamic> data) async {
+    return await post('/create', data);
+  }
+
+  Future<Map<String, dynamic>> update(Map<String, dynamic> data) async {
+    return await put('/update', data);
+  }
 }

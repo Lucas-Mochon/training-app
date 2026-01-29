@@ -33,6 +33,7 @@ void main() {
           create: (context) =>
               Trainingstore(authStore: context.read<AuthStore>()),
         ),
+        ChangeNotifierProvider(create: (context) => TextEditingController()),
       ],
       child: const MyApp(),
     ),

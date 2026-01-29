@@ -4,7 +4,6 @@ import 'package:frontend/constants/enum/user_level_enum.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:frontend/store/auth_store.dart';
 import 'package:frontend/store/page/user/profil_store.dart';
-import 'package:frontend/views/home_view.dart';
 import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -167,10 +166,7 @@ class _RegisterPageState extends State<RegisterPage> {
       await Future.delayed(const Duration(milliseconds: 500));
 
       if (mounted) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeView()),
-        );
+        return;
       }
     } on FormatException catch (e) {
       final errorMsg = _getErrorMessage(e.toString());
