@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { UserService } from '../service/user.service';
 import { SuccessResponse } from '../common/response/response.success';
 import { ErrorResponse } from '../common/response/response.error';
+import { UserRoleEnum } from '../enum/user-roles-enum';
 
 const service = new UserService();
 
@@ -79,6 +80,20 @@ export class UserController {
         return res.status(400).json(
             new ErrorResponse(err.message)
         );
+    }
+  }
+
+  static async assignAdmin(req: Request, res: Response) {
+    try {
+      const { userId } = req.params;
+      await service.assignRole(userId as string, UserRoleEnum.ADMIN);
+      return res.json(
+        new SuccessResponse('Admin role assigned successfully', null)
+      );
+    } catch (err: any) {
+      return res.status(400).json(
+        new ErrorResponse(err.message)
+      );
     }
   }
 }

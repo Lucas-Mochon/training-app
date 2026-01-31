@@ -6,6 +6,19 @@ import MuscleGroup from './muscleGroups';
 import ExerciseMuscle from './exerciceMuscle';
 import Exercise from './exercice';
 import WorkoutExercise from './workoutExercice';
+import UserRole from './userRoles';
+
+/* ============================
+   User ↔ UserRole (1 → N)
+============================ */
+User.hasMany(UserRole, { 
+  foreignKey: 'userId',
+  as: 'roles'
+});
+UserRole.belongsTo(User, { 
+  foreignKey: 'userId',
+  as: 'user'
+});
 
 /* ============================
    User ↔ Workout (1 → N)

@@ -15,7 +15,6 @@ export const errorMiddleware = (
       message: err.message,
     });
   } else {
-    // Erreur inconnue
     Logger.error(err.message, { stack: err.stack, url: req.url });
     res.status(500).json({
       success: false,
