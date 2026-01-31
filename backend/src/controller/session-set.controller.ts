@@ -17,7 +17,7 @@ export class SessionSetController {
     
     static async getOne(req: Request, res: Response) {
         try {
-            const result = await service.getOne(req.params.id);
+            const result = await service.getOne(req.params.id as string);
             return res.status(200).json(new SuccessResponse('Session set get successfully', result));
         } catch (err: any) {
             return res.status(500).json(new ErrorResponse(err.message || 'Internal server error'));
@@ -44,7 +44,7 @@ export class SessionSetController {
 
     static async delete(req: Request, res: Response) {
         try {
-            const result = await service.delete(req.params.id);
+            const result = await service.delete(req.params.id as string);
             return res.status(204).json(new SuccessResponse('Session set deleted successfully', result));
         } catch (err: any) {
             return res.status(500).json(new ErrorResponse(err.message || 'Internal server error'));

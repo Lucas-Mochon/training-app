@@ -18,7 +18,7 @@ export class MuscleGroupController {
 
     static async getOne(req: Request, res: Response) {
         try {
-            const result = await service.getOne(parseInt(req.params.id));
+            const result = await service.getOne(Number(req.params.id));
             return res.status(200).json(new SuccessResponse('Muscle group get successfully', result));
         } catch (err: any) {
             return res.status(500).json(new ErrorResponse(err.message || 'Internal server error'));
@@ -45,7 +45,7 @@ export class MuscleGroupController {
 
     static async delete(req: Request, res: Response) {
         try {
-            const result = await service.delete(parseInt(req.params.id));
+            const result = await service.delete(Number(req.params.id));
             return res.status(204).json(new SuccessResponse('Muscle group deleted successfully', result));
         } catch (err: any) {
             return res.status(500).json(new ErrorResponse(err.message || 'Internal server error'));

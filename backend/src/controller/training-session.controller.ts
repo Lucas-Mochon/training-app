@@ -8,7 +8,9 @@ const service = new TrainingSessionService();
 export class TrainingSessionController {
     static async list(req: Request, res: Response) {
         try {
-            const result = await service.list();
+            // @ts-ignore
+            const userId = req.user.userId;
+            const result = await service.list(userId);
             return res.status(200).json(new SuccessResponse('List get successfully', result));
         } catch (err: any) {
             return res.status(500).json(new ErrorResponse(err.message || 'Internal server error'));
@@ -17,7 +19,7 @@ export class TrainingSessionController {
 
     static async getOne(req: Request, res: Response) {
         try {
-            const result = await service.getOne(req.params.id);
+            const result = await service.getOne(req.params.id as string);
             return res.status(200).json(new SuccessResponse('Training session get successfully', result));
         } catch (err: any) {
             return res.status(500).json(new ErrorResponse(err.message || 'Internal server error'));
@@ -44,7 +46,7 @@ export class TrainingSessionController {
 
     static async delete(req: Request, res: Response) {
         try {
-            const result = await service.delete(req.params.id);
+            const result = await service.delete(req.params.id as string);
             return res.status(200).json(new SuccessResponse('Training session delete successfully', result));
         } catch (err: any) {
             return res.status(500).json(new ErrorResponse(err.message || 'Internal server error'));

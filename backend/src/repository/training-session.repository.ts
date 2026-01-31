@@ -2,8 +2,8 @@ import { UpdateTrainingSessionDto } from "../dto/training-session.dto";
 import TrainingSession, { TrainingSessionCreationAttributes } from "../models/trainingSession";
 
 export class TrainingSessionRepository {
-    async list(): Promise<TrainingSession[]> {
-        return TrainingSession.findAll();
+    async list(userId: string): Promise<TrainingSession[]> {
+        return TrainingSession.findAll({where: {userId: userId}});
     }
 
     async getOne(id: string): Promise<TrainingSession | null> {

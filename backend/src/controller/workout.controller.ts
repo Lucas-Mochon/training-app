@@ -7,7 +7,7 @@ import { ErrorResponse } from '../common/response/response.error';
 export class WorkoutController {
   static async list(req: Request, res: Response) {
     try {
-      const filter = req.query as FilterListWorkouts;
+      const filter = req.query as unknown as FilterListWorkouts;
       const workouts = await WorkoutService.list(filter);
 
       return res.status(200).json(new SuccessResponse('List get successfully', workouts));
@@ -18,7 +18,7 @@ export class WorkoutController {
 
   static async getOne(req: Request, res: Response) {
     try {
-        const workout = await WorkoutService.getOne(req.params.id);
+        const workout = await WorkoutService.getOne(req.params.id as string);
         return res.status(200).json(new SuccessResponse('Workout get successfully', workout));
     } catch (err: any) {
         return res.status(500).json(new ErrorResponse(err.message || 'Internal server error'));

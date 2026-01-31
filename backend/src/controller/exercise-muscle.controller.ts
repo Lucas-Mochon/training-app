@@ -17,7 +17,7 @@ export class ExerciseMuscleController {
 
     static async getOne(req: Request, res: Response) {
         try {
-            const result = await service.getOne(parseInt(req.params.id));
+            const result = await service.getOne(Number(req.params.id));
             return res.status(200).json(new SuccessResponse('Exercice muscle get successfully', result));
         } catch (err: any) {
             return res.status(500).json(new ErrorResponse(err.message || 'Internal server error'));
@@ -44,7 +44,7 @@ export class ExerciseMuscleController {
 
     static async delete(req: Request, res: Response) {
         try {
-            const result = await service.delete(parseInt(req.params.id));
+            const result = await service.delete(Number(req.params.id));
             return res.status(204).json(new SuccessResponse('Exercice muscle deleted successfully', result));
         } catch (err: any) {
             return res.status(500).json(new ErrorResponse(err.message || 'Internal server error'));

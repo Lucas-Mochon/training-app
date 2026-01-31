@@ -5,8 +5,8 @@ import { TrainingSessionRepository } from "../repository/training-session.reposi
 export class TrainingSessionService {
     private repo = new TrainingSessionRepository();
 
-    async list(): Promise<TrainingSession[]> {
-        return this.repo.list();
+    async list(userId: string): Promise<TrainingSession[]> {
+        return this.repo.list(userId);
     }
 
     async getOne(id: string): Promise<TrainingSession | null> {
