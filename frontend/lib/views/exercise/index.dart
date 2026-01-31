@@ -61,7 +61,6 @@ class _ExercisePageState extends State<ExercisePage> {
   Widget build(BuildContext context) {
     return Consumer2<ExerciseStore, AuthStore>(
       builder: (context, store, authStore, _) {
-        print(authStore.role);
         final isAdmin = authStore.role == 'admin';
         final isUser = authStore.role == 'user';
 
