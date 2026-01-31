@@ -31,11 +31,10 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
       ),
     );
 
-    // 👇 Si result == true, recharge avec forceRefresh
     if (result == true && mounted) {
       await context.read<ExerciseStore>().getOne(
         widget.exerciseId,
-        forceRefresh: true, // 👈 Force le rechargement depuis l'API
+        forceRefresh: true,
       );
     }
   }
@@ -109,7 +108,6 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Titre
                   Text(
                     exercise.name,
                     style: Theme.of(context).textTheme.headlineMedium,
@@ -117,7 +115,6 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
 
                   const SizedBox(height: 24),
 
-                  // Badges
                   Row(
                     children: [
                       if (exercise.difficulty != null)

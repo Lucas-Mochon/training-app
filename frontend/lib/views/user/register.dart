@@ -140,10 +140,17 @@ class _RegisterPageState extends State<RegisterPage> {
       final data = response['data'];
       final accessToken = data['accessToken'];
       final refreshToken = data['user']?['refreshToken'];
+      final role = data['user']?['role'];
       final user = data['user'];
 
       if (accessToken == null) {
         throw Exception('Token d\'accès manquant');
+      }
+
+      if (role != null) {
+        await context.read<AuthStore>().setRole(role);
+      } else {
+        await context.read<AuthStore>().setRole('user');
       }
 
       await context.read<AuthStore>().setToken(accessToken);

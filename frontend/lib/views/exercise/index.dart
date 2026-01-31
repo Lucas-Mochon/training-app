@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/enum/exercise_difficulty_enum.dart';
 import 'package:frontend/constants/enum/exercise_equipment_enum.dart';
+import 'package:frontend/store/auth_store.dart';
 import 'package:frontend/store/page/exercise/exercise_store.dart';
 import 'package:frontend/views/exercise/detail.dart';
 import 'package:frontend/views/exercise/create.dart';
@@ -58,8 +59,19 @@ class _ExercisePageState extends State<ExercisePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ExerciseStore>(
-      builder: (context, store, _) {
+    return Consumer2<ExerciseStore, AuthStore>(
+      builder: (context, store, authStore, _) {
+        print(authStore.role);
+        final isAdmin = authStore.role == 'admin';
+        final isUser = authStore.role == 'user';
+
+        if (!isAdmin && !isUser) {
+          return Scaffold(
+            appBar: AppBar(title: const Text('Exercices'), elevation: 0),
+            body: const Center(child: Text('Accès refusé')),
+          );
+        }
+
         if (store.exercises == null &&
             !store.isLoading &&
             store.error == null) {
@@ -109,10 +121,11 @@ class _ExercisePageState extends State<ExercisePage> {
             title: const Text('Exercices'),
             elevation: 0,
             actions: [
-              IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: _navigateToCreate,
-              ),
+              if (isAdmin)
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: _navigateToCreate,
+                ),
             ],
           ),
           body: SafeArea(
@@ -178,7 +191,6 @@ class _ExercisePageState extends State<ExercisePage> {
                     ],
                   ),
                 ),
-
                 Expanded(
                   child: exercises.isEmpty
                       ? Center(

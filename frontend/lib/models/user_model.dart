@@ -8,6 +8,7 @@ class User {
   final UserLevel level;
   final UserGoal goal;
   final String? refreshToken;
+  final String? role;
 
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -19,6 +20,7 @@ class User {
     required this.level,
     required this.goal,
     this.refreshToken,
+    this.role,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -33,6 +35,7 @@ class User {
       refreshToken: json['refreshToken'],
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
+      role: json['role'],
     );
   }
 
@@ -46,6 +49,7 @@ class User {
       'refreshToken': refreshToken,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
+      'role': role,
     };
   }
 }

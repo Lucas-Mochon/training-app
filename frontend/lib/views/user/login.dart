@@ -34,17 +34,72 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  Future<void> _handleLogin() async {
+  bool _isValidEmail(String email) {
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
+    return emailRegex.hasMatch(email);
+  }
+
+  String? _validateInputs() {
     if (_emailController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Veuillez entrer votre email')),
-      );
-      return;
+      return 'Veuillez entrer votre email';
+    }
+
+    if (!_isValidEmail(_emailController.text)) {
+      return 'Veuillez entrer un email valide';
     }
 
     if (_passwordController.text.isEmpty) {
+      return 'Veuillez entrer votre mot de passe';
+    }
+
+    if (_passwordController.text.length < 8) {
+      return 'Le mot de passe doit contenir au moins 8 caractères';
+    }
+
+    return null;
+  }
+
+  String _getErrorMessage(String error) {
+    if (error.contains('Invalid credentials') ||
+        error.contains('not found') ||
+        error.contains('401')) {
+      return 'Email ou mot de passe incorrect';
+    }
+    if (error.contains('already exists')) {
+      return 'Cet email est déjà utilisé';
+    }
+    if (error.contains('Invalid email')) {
+      return 'Format d\'email invalide';
+    }
+    if (error.contains('Password')) {
+      return 'Le mot de passe ne respecte pas les critères de sécurité';
+    }
+    if (error.contains('network') || error.contains('Connection')) {
+      return 'Erreur de connexion. Vérifiez votre internet';
+    }
+    if (error.contains('timeout') || error.contains('TimeoutException')) {
+      return 'La requête a expiré. Réessayez';
+    }
+    if (error.contains('SocketException')) {
+      return 'Impossible de se connecter au serveur';
+    }
+    if (error.contains('FormatException')) {
+      return 'Erreur lors du traitement de la réponse du serveur';
+    }
+    return error;
+  }
+
+  Future<void> _handleLogin() async {
+    final validationError = _validateInputs();
+    if (validationError != null) {
+      setState(() => _error = validationError);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Veuillez entrer votre mot de passe')),
+        SnackBar(
+          content: Text(validationError),
+          backgroundColor: Colors.orange,
+        ),
       );
       return;
     }
@@ -54,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
       _error = null;
     });
 
-    final userService = UserService(authStore: AuthStore());
+    final userService = UserService(authStore: context.read<AuthStore>());
 
     try {
       final response = await userService.login({
@@ -65,27 +120,66 @@ class _LoginPageState extends State<LoginPage> {
       final data = response['data'];
       final accessToken = data['accessToken'];
       final refreshToken = data['user']?['refreshToken'];
+      final role = data['user']?['role'];
       final user = data['user'];
 
-      if (accessToken != null) {
-        await context.read<AuthStore>().setToken(accessToken);
+      if (accessToken == null) {
+        throw Exception('Token d\'accès manquant');
+      }
+
+      await context.read<AuthStore>().setToken(accessToken);
+
+      if (role != null) {
+        await context.read<AuthStore>().setRole(role);
+      } else {
+        await context.read<AuthStore>().setRole('user');
       }
 
       if (refreshToken != null) {
         await context.read<AuthStore>().setRefreshToken(refreshToken);
       }
 
-      ProfileStore(authStore: AuthStore()).user = user;
+      ProfileStore(authStore: context.read<AuthStore>()).user = user;
 
       if (!mounted) return;
-    } catch (e) {
-      setState(() {
-        _error = e.toString();
-      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Connexion réussie !'),
+          backgroundColor: Colors.green,
+        ),
+      );
+
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
+    } on FormatException catch (e) {
+      final errorMsg = _getErrorMessage(e.toString());
+      setState(() => _error = errorMsg);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erreur : $e'), backgroundColor: Colors.red),
+          SnackBar(content: Text(errorMsg), backgroundColor: Colors.red),
+        );
+      }
+    } on Exception catch (e) {
+      final errorMsg = _getErrorMessage(e.toString());
+      setState(() => _error = errorMsg);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMsg), backgroundColor: Colors.red),
+        );
+      }
+    } catch (e) {
+      final errorMsg = _getErrorMessage(e.toString());
+      setState(() => _error = errorMsg);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMsg), backgroundColor: Colors.red),
         );
       }
     } finally {
@@ -180,6 +274,52 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 32),
 
+              if (_error != null) ...[
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.red.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.red.withOpacity(0.3)),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.error_outline,
+                        color: Colors.red,
+                        size: 24,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Erreur de connexion',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              _error!,
+                              style: const TextStyle(
+                                color: Colors.red,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+              ],
+
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
@@ -206,36 +346,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
 
               const SizedBox(height: 16),
-              if (_error != null) ...[
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.red.withOpacity(0.3)),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.error_outline,
-                        color: Colors.red,
-                        size: 24,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          _error!,
-                          style: const TextStyle(
-                            color: Colors.red,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
-              ],
 
               Center(
                 child: Row(
@@ -252,7 +362,7 @@ class _LoginPageState extends State<LoginPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => RegisterPage(),
+                                  builder: (context) => const RegisterPage(),
                                 ),
                               );
                             },
