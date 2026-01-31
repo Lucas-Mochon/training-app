@@ -71,6 +71,18 @@ class _WorkoutPageState extends State<WorkoutPage> {
     _applyFilters();
   }
 
+  Widget _buildFloatingActionButton() {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const WorkoutCreatePage()),
+        );
+      },
+      child: const Icon(Icons.add),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer2<ProfileStore, WorkoutStore>(
@@ -138,6 +150,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                 ],
               ),
             ),
+            floatingActionButton: _buildFloatingActionButton(),
           );
         }
 
@@ -320,17 +333,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
               ],
             ),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const WorkoutCreatePage(),
-                ),
-              );
-            },
-            child: const Icon(Icons.add),
-          ),
+          floatingActionButton: _buildFloatingActionButton(),
         );
       },
     );
