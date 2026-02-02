@@ -1,4 +1,4 @@
-FROM ghcr.io/cirruslabs/flutter:latest
+FROM ghcr.io/cirruslabs/flutter:latest as builder
 
 WORKDIR /app
 
@@ -6,13 +6,14 @@ COPY pubspec.yaml pubspec.lock* ./
 RUN flutter pub get
 
 COPY . .
+RUN flutter build web --release --no-tree-shake-icons
 
-RUN flutter build web --release
+FROM python:3.11-slim
 
-RUN apt-get update && apt-get install -y python3 && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+
+COPY --from=builder /app/build/web ./build/web
 
 EXPOSE 5000
-
-WORKDIR /app/build/web
 
 CMD ["python3", "-m", "http.server", "5000"]
