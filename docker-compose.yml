@@ -1,6 +1,8 @@
 services:
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: backend-node
     ports:
       - "3000:3000"
@@ -8,6 +10,7 @@ services:
       - ./backend:/app
     networks:
       - app-network
+    restart: unless-stopped
 
   frontend:
     build:
@@ -20,16 +23,22 @@ services:
       - backend
     networks:
       - app-network
+    restart: unless-stopped
 
   workout-agent:
-    build: ./workout_builder_agent
+    build:
+      context: ./workout_builder_agent
+      dockerfile: Dockerfile
     container_name: workout-agent
     ports:
       - "8000:8000"
+    environment:
+      - API_KEY=secret-key
     volumes:
       - ./workout_builder_agent:/app
     networks:
       - app-network
+    restart: unless-stopped
 
 networks:
   app-network:
