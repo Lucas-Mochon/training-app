@@ -1,12 +1,15 @@
-import { UpdateExercice } from "../dto/exercice.dto";
+import { ExerciseFilters, UpdateExercice } from "../dto/exercice.dto";
 import Exercise, { ExerciseCreationAttributes } from "../models/exercice";
 import { ExerciseRepository } from "../repository/exercise.repository";
 
 export class ExerciseService {
     private repo = new ExerciseRepository();
 
-    async list(): Promise<Exercise[]> {
-        return this.repo.list();
+    async list(muscleGroup?: string): Promise<Exercise[]> {
+        const filters: ExerciseFilters = {
+            muscleGroup: muscleGroup
+        }
+        return this.repo.list(filters);
     }
 
     async getOne(id: string): Promise<Exercise | null> {

@@ -1,10 +1,34 @@
-import { UpdateExercice } from "../dto/exercice.dto";
+import { ExerciseFilters, UpdateExercice } from "../dto/exercice.dto";
 import Exercise, { ExerciseCreationAttributes } from "../models/exercice";
+import MuscleGroup from "../models/muscleGroups";
 
 export class ExerciseRepository {
-    async list(): Promise<Exercise[]> {
-        return Exercise.findAll();
+    async list(filters: ExerciseFilters | null): Promise<Exercise[]> {
+    try {
+        const whereClause: any = {};
+        
+        if (filters?.muscleGroup) {
+            whereClause['$muscleGroups.name$'] = filters.muscleGroup;
+        }
+        
+        return Exercise.findAll({
+            include: [
+                { 
+                    model: MuscleGroup, 
+                    as: 'muscleGroups',
+                    through: { attributes: [] },
+                    required: filters?.muscleGroup ? true : false
+                }
+            ],
+            where: whereClause,
+            raw: false,
+            subQuery: false
+        });
+    } catch (error) {
+        return [];
     }
+}
+
     
     async getOne(id: string): Promise<Exercise | null> {
         return Exercise.findByPk(id);

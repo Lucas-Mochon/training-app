@@ -9,3 +9,7 @@ export interface UpdateExercice {
     is_compound?: boolean;
     equipment?: ExerciseEquipment;
 }
+
+export interface ExerciseFilters {
+    muscleGroup?: string;
+}

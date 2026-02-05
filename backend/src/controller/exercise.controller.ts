@@ -8,10 +8,15 @@ const service = new ExerciseService();
 export class ExerciseController {
     static async list(req: Request, res: Response) {
         try {
-            const result = await service.list();
-            return res.status(200).json(new SuccessResponse('List get successfully', result));
+            const muscleGroup = req.query?.muscle_group as string;
+            const result = await service.list(muscleGroup);
+            return res.status(200).json(
+                new SuccessResponse('List get successfully', result)
+            );
         } catch (err: any) {
-            return res.status(500).json(new ErrorResponse(err.message || 'Internal server error'));
+            return res.status(500).json(
+                new ErrorResponse(err.message || 'Internal server error')
+            );
         }
     }
 
