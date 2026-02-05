@@ -7,3 +7,5 @@ docker-compose.yml
 *.swp
 *.swo
 *~
+workout_builder_agent/__pycache__/main.cpython-311.pyc
+workout_builder_agent/api/__pycache__/exercise.cpython-311.pyc
