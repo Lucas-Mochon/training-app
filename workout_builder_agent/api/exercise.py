@@ -9,30 +9,31 @@ class ExercisesAPIService:
         self.api_key = "secret-key"
         self.http_client = httpx.AsyncClient(timeout=10.0)
     
-    async def get_exercises(self) -> list:
+    async def get_exercises(self, muscle_group: Optional[str] = None) -> list:
         try:
             headers = {
                 "Content-Type": "application/json",
                 "X-API-Key": self.api_key
             }
             
-            url = f"{self.base_url}/exercices/"
-            print(f"Appel API: {url}")
+            params = {}
+            if muscle_group:
+                params["muscle_group"] = muscle_group
+            
+            url = f"{self.base_url}/exercices"
             
             response = await self.http_client.get(
                 url, 
-                headers=headers
+                headers=headers,
+                params=params
             )
             response.raise_for_status()
             return response.json()
-        except httpx.HTTPStatusError as e:
-            print(f"❌ Erreur HTTP {e.response.status_code}: {e.response.text}")
+        except httpx.HTTPStatusError:
             return []
-        except httpx.ConnectError as e:
-            print(f"❌ Erreur connexion: {e}")
+        except httpx.ConnectError:
             return []
-        except Exception as e:
-            print(f"❌ Erreur: {e}")
+        except Exception:
             return []
     
     async def close(self):

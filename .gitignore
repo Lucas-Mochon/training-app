@@ -1,0 +1,9 @@
+# Docker
+docker-compose.yml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
