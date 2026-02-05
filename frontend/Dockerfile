@@ -12,8 +12,8 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY --from=builder /app/build/web ./build/web
+COPY --from=builder /app/build/web ./
 
 EXPOSE 5000
 
-CMD ["python3", "-m", "http.server", "5000"]
+CMD ["python3", "-m", "http.server", "5000", "--directory", "."]

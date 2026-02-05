@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/app.dart';
 import 'package:frontend/store/auth_store.dart';
+import 'package:frontend/store/muscle_group_store.dart';
 import 'package:frontend/store/page/exercise/exercise_store.dart';
 import 'package:frontend/store/page/training/training_store.dart';
 import 'package:frontend/store/page/user/profil_store.dart';
@@ -34,6 +35,10 @@ void main() {
               Trainingstore(authStore: context.read<AuthStore>()),
         ),
         ChangeNotifierProvider(create: (context) => TextEditingController()),
+        ChangeNotifierProvider(
+          create: (context) =>
+              MuscleGroupStore(authStore: context.read<AuthStore>()),
+        ),
       ],
       child: const MyApp(),
     ),

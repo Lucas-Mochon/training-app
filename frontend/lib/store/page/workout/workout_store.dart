@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:frontend/constants/dto/workout_detail.dart';
 import 'package:frontend/constants/enum/workout_goal_enum.dart';
 import 'package:frontend/models/workout_model.dart';
+import 'package:frontend/services/workout_builder_service.dart';
 import 'package:frontend/services/workout_service.dart';
 import 'package:frontend/store/auth_store.dart';
 
 class WorkoutStore extends ChangeNotifier {
   final AuthStore authStore;
   late final WorkoutService workoutService;
+  late final WorkoutBuilderService workoutBuilderService;
 
   List<Workout>? workouts;
   Workout? workout;
@@ -17,6 +19,7 @@ class WorkoutStore extends ChangeNotifier {
 
   WorkoutStore({required this.authStore}) {
     workoutService = WorkoutService(authStore: authStore);
+    workoutBuilderService = WorkoutBuilderService(authStore: authStore);
   }
 
   Future<void> getList(
@@ -116,6 +119,34 @@ class WorkoutStore extends ChangeNotifier {
         workoutDetail = null;
         workout = null;
       }
+    } catch (e) {
+      error = e.toString();
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> generateWorkout(
+    String userId,
+    int duration,
+    String description,
+    String muscleGroup,
+  ) async {
+    isLoading = true;
+    error = null;
+    notifyListeners();
+
+    try {
+      final response = await workoutBuilderService.generateWorkout(
+        userId,
+        duration,
+        description,
+        muscleGroup,
+      );
+      final data = response['data'];
+      workoutDetail = WorkoutDetailResponse.fromJson(data);
+      workout = workoutDetail!.workout;
     } catch (e) {
       error = e.toString();
     } finally {
