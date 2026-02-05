@@ -7,6 +7,7 @@ import exerciseMuscleRoutes from './routes/exercise-muscle.routes';
 import workoutExerciseRoutes from './routes/workout-exercise.routes';
 import sessionSetRoutes from './routes/session-set.routes';
 import trainingSessionRoutes from './routes/training-session.routes';
+import workoutBuilderRoutes from './routes/workout-builder.routes';
 import { initDb } from './models/index';
 import { Logger } from './common/logger';
 import { observabilityMiddleware } from './middleware/observability';
@@ -33,6 +34,7 @@ app.use('/api/exercise-muscles', authMiddleware, observabilityMiddleware, errorM
 app.use('/api/workout-exercises', authMiddleware, observabilityMiddleware, errorMiddleware, workoutExerciseRoutes);
 app.use('/api/session-sets', authMiddleware, observabilityMiddleware, errorMiddleware, sessionSetRoutes);
 app.use('/api/training-sessions', authMiddleware, observabilityMiddleware, errorMiddleware, trainingSessionRoutes);
+app.use('/api/workout-builder', authMiddleware, observabilityMiddleware, errorMiddleware, workoutBuilderRoutes)
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => Logger.info(`Server running on ${PORT}`));

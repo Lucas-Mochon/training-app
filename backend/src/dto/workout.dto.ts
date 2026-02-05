@@ -26,3 +26,10 @@ export interface WorkoutExerciseDto {
   workoutId: string;
   exerciseId: string;
 }
+
+export interface GenerateWorkoutRequest {
+  user_id: string;
+  description: string;
+  muscle_group: string;
+  duration: number;
+}
