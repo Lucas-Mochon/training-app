@@ -9,7 +9,7 @@ class ExercisesAPIService:
         self.api_key = "secret-key"
         self.http_client = httpx.AsyncClient(timeout=10.0)
     
-    async def get_exercises(self, muscle_group: Optional[str] = None) -> list:
+    async def get_exercises(self, muscle_group: Optional[str] = None) -> dict:
         try:
             headers = {
                 "Content-Type": "application/json",
@@ -30,11 +30,11 @@ class ExercisesAPIService:
             response.raise_for_status()
             return response.json()
         except httpx.HTTPStatusError:
-            return []
+            return {"data": []}
         except httpx.ConnectError:
-            return []
+            return {"data": []}
         except Exception:
-            return []
+            return {"data": []}
     
     async def close(self):
         await self.http_client.aclose()

@@ -10,7 +10,7 @@ export class WorkoutExerciseRepository {
         return WorkoutExercise.findByPk(id);
     }
 
-    async create(data: WorkoutExerciseCreationAttributes): Promise<WorkoutExercise | null> {
+    static async create(data: WorkoutExerciseCreationAttributes): Promise<WorkoutExercise | null> {
         return WorkoutExercise.create(data);
     }
 

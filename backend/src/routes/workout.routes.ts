@@ -7,5 +7,6 @@ router.get('/', WorkoutController.list);
 router.get('/:id', WorkoutController.getOne);
 router.post('/create', WorkoutController.create);
 router.put('/update', WorkoutController.update);
+router.post('/from-generation', WorkoutController.createFromGeneration);
 
 export default router;

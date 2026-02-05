@@ -6,3 +6,23 @@ export interface FilterListWorkouts {
     maxDuration?: number;
     goal?: WorkoutGoal;
 }
+
+export interface WorkoutGenerationResponseDto {
+  workout: WorkoutDto;
+  workoutExercises: WorkoutExerciseDto[];
+}
+
+export interface WorkoutDto {
+  goal: WorkoutGoal;
+  duration: number;
+  userId: string;
+}
+
+export interface WorkoutExerciseDto {
+  sets: number;
+  reps: string;
+  rest_seconds: number;
+  order_index: number;
+  workoutId: string;
+  exerciseId: string;
+}

@@ -45,8 +45,9 @@ export class WorkoutRepository {
         });
     }
 
-    static async create(data: WorkoutCreationAttributes): Promise<Workout | null> {
-        return Workout.create(data);
+    static async create(data: WorkoutCreationAttributes): Promise<Workout> {
+        const workout = await Workout.create(data);
+        return workout;
     }
 
     static async update(data: WorkoutAttributes): Promise<Workout | null> {

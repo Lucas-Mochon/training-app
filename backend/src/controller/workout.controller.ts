@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { WorkoutService } from '../service/workout.service';
-import { FilterListWorkouts } from '../dto/workout.dto';
+import { FilterListWorkouts, WorkoutGenerationResponseDto } from '../dto/workout.dto';
 import { SuccessResponse } from '../common/response/response.success';
 import { ErrorResponse } from '../common/response/response.error';
 
@@ -31,6 +31,35 @@ export class WorkoutController {
         return res.status(201).json(new SuccessResponse('Workout created successfully', workout));
     } catch (err: any) {
         return res.status(500).json(new ErrorResponse(err.message || 'Internal server error'));
+    }
+  }
+
+  static async createFromGeneration(req: Request, res: Response) {
+    try {
+      const generationData = req.body as WorkoutGenerationResponseDto;
+      
+      if (!generationData.workout || !generationData.workoutExercises) {
+        return res.status(400).json(
+          new ErrorResponse('Invalid data: workout and workoutExercises are required')
+        );
+      }
+
+      if (generationData.workoutExercises.length === 0) {
+        return res.status(400).json(
+          new ErrorResponse('At least one exercise is required')
+        );
+      }
+
+      const workout = await WorkoutService.createWorkoutWithWorkoutExercise(generationData);
+
+      return res.status(201).json(
+        new SuccessResponse(
+          `Workout created successfully with ${generationData.workoutExercises.length} exercises`,
+          workout
+        )
+      );
+    } catch (err: any) {
+      return res.status(500).json(new ErrorResponse(err.message || 'Internal server error'));
     }
   }
 
